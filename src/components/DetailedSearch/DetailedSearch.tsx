@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { format } from "date-fns";
@@ -19,14 +19,24 @@ const DetailedSearch = () => {
 		data.birth_date = format(data.birth_date, "yyyy-MM-dd");
 		console.log(data);
 
-		navigate({
-			pathname: "/search",
-			search: createSearchParams({
-				first_name: data.first_name,
-				last_name: data.last_name,
-				birth_date: data.birth_date,
-			}).toString(),
-		});
+		if (data.birthdateBool) {
+			navigate({
+				pathname: "/search",
+				search: createSearchParams({
+					first_name: data.first_name,
+					last_name: data.last_name,
+					birth_date: data.birth_date,
+				}).toString(),
+			});
+		} else {
+			navigate({
+				pathname: "/search",
+				search: createSearchParams({
+					first_name: data.first_name,
+					last_name: data.last_name,
+				}).toString(),
+			});
+		}
 	};
 
 	return (
@@ -51,6 +61,19 @@ const DetailedSearch = () => {
 					})}
 				/>
 			</Box>
+
+			<FormControlLabel
+				control={
+					<Controller
+						name={"birthdateBool"}
+						control={control}
+						render={({ field: props }) => (
+							<Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
+						)}
+					/>
+				}
+				label={"Include Birth Date"}
+			/>
 
 			<Box>
 				<Controller

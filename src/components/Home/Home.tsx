@@ -45,7 +45,8 @@ const Home = () => {
 					<Table>
 						<TableHead>
 							<TableCell>Nr</TableCell>
-							<TableCell>Patientenname</TableCell>
+							<TableCell>Nachname</TableCell>
+							<TableCell>Vorname</TableCell>
 							<TableCell>Geburtstag</TableCell>
 							<TableCell>Zuletzt bearbeitet</TableCell>
 							<TableCell></TableCell>
@@ -71,7 +72,8 @@ const generateRow = (patient: Patient) => {
 	return (
 		<TableRow>
 			<TableCell>{patient.id.toString().padStart(2, "0")}</TableCell>
-			<TableCell>{`${patient.last_name},${patient.first_name}`}</TableCell>
+			<TableCell>{`${patient.last_name}`}</TableCell>
+			<TableCell>{`${patient.first_name}`}</TableCell>
 			<TableCell>{patient.birth_date}</TableCell>
 			<TableCell>{new Date(patient.last_update).toUTCString()}</TableCell>
 			<TableCell sx={{ display: "flex", color: "#395FCF", cursor: "pointer", gap: 1 }}>
