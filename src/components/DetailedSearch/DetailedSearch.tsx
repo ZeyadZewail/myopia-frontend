@@ -19,21 +19,13 @@ const DetailedSearch = () => {
 		data.birth_date = format(data.birth_date, "yyyy-MM-dd");
 		console.log(data);
 
-		if (data.birthdateBool) {
+		if (data.last_name || data.first_name) {
 			navigate({
 				pathname: "/search",
 				search: createSearchParams({
-					first_name: data.first_name,
-					last_name: data.last_name,
-					birth_date: data.birth_date,
-				}).toString(),
-			});
-		} else {
-			navigate({
-				pathname: "/search",
-				search: createSearchParams({
-					first_name: data.first_name,
-					last_name: data.last_name,
+					...(data.first_name != "" && { first_name: data.first_name }),
+					...(data.last_name != "" && { last_name: data.last_name }),
+					...(data.birthdateBool && { birth_date: data.birth_date }),
 				}).toString(),
 			});
 		}
@@ -47,18 +39,14 @@ const DetailedSearch = () => {
 					label="Vorname"
 					helperText={errors?.first_name?.message as string}
 					error={Boolean(errors?.first_name)}
-					{...register("first_name", {
-						required: { value: true, message: "Please enter Vorname" },
-					})}
+					{...register("first_name")}
 				/>
 				<TextField
 					sx={{ width: "266px" }}
 					label="Nachname"
 					helperText={errors?.last_name?.message as string}
 					error={Boolean(errors?.last_name)}
-					{...register("last_name", {
-						required: { value: true, message: "Please enter Nachname" },
-					})}
+					{...register("last_name")}
 				/>
 			</Box>
 
