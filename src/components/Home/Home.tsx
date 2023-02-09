@@ -1,15 +1,14 @@
-import { Box, Table, TableRow, TextField, Typography } from "@mui/material";
-import NavBar from "../NavBar/NavBar";
-import Autocomplete from "@mui/material/Autocomplete";
+import { Box, Table, TableRow, Typography } from "@mui/material";
 import SearchBar from "../SearchBar/SearchBar";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import EditIcon from "@mui/icons-material/Edit";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DetailedSearch from "../DetailedSearch/DetailedSearch";
 import Patient from "../../types/Patient";
+import DetailsController from "../DetailsController/DetailsController";
 
 const Home = () => {
 	const [patients, setPatients] = useState<Patient[]>([]);
@@ -58,6 +57,7 @@ const Home = () => {
 			<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
 				{`Anzahl Patienten: ${patients.length}`}
 			</Typography>
+			<DetailsController />
 			<Typography fontWeight={"500"} variant="h4">
 				Detailsuche
 			</Typography>
@@ -70,7 +70,7 @@ export default Home;
 
 const generateRow = (patient: Patient) => {
 	return (
-		<TableRow>
+		<TableRow key={patient.first_name + patient.first_name + patient.birth_date}>
 			<TableCell>{patient.id.toString().padStart(2, "0")}</TableCell>
 			<TableCell>{`${patient.last_name}`}</TableCell>
 			<TableCell>{`${patient.first_name}`}</TableCell>
