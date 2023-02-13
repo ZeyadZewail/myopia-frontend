@@ -8,6 +8,7 @@ import { Amplify, Auth } from "aws-amplify";
 import NewPatient from "./components/NewPatient/NewPatient";
 import Search from "./components/Search/Search";
 import NavBar from "./components/NavBar/NavBar";
+import Details from "./components/Details/Details";
 
 const theme = createTheme({
 	typography: {
@@ -101,6 +102,17 @@ function App() {
 									<Fragment>
 										<NavBar setLogin={setLoggedIn} />
 										<Search />
+									</Fragment>
+								</PrivateWrapper>
+							}
+						/>
+						<Route
+							path="/details/:id"
+							element={
+								<PrivateWrapper>
+									<Fragment>
+										<NavBar setLogin={setLoggedIn} />
+										<Details />
 									</Fragment>
 								</PrivateWrapper>
 							}

@@ -1,9 +1,10 @@
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 interface DetailsGraphInterface {
 	data: object[];
+	patientData: Object[];
 	width: number;
 	height: number;
 	xLabel: string;
@@ -11,7 +12,14 @@ interface DetailsGraphInterface {
 	domain: any[];
 }
 
-const DetailsGraph: FC<DetailsGraphInterface> = ({ data, width, height, domain, xLabel, yLabel }) => {
+const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, height, domain, xLabel, yLabel }) => {
+	const [combined, setCombined] = useState<any[]>([]);
+
+	useEffect(() => {
+		setCombined(mergeObjects(data, patientData, "name"));
+	}, [data, patientData]);
+
+	console.log("combined", combined);
 	return (
 		<div>
 			<Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>
@@ -20,7 +28,7 @@ const DetailsGraph: FC<DetailsGraphInterface> = ({ data, width, height, domain, 
 			<LineChart
 				width={width}
 				height={height}
-				data={data}
+				data={combined}
 				margin={{
 					top: 0,
 					right: 0,
@@ -39,18 +47,27 @@ const DetailsGraph: FC<DetailsGraphInterface> = ({ data, width, height, domain, 
 						paddingLeft: "20px",
 					}}
 				/>
+
 				<Line type="monotone" dataKey={98} stroke="red" />
-				<Line type="monotone" dataKey={95} stroke="red" />
-				<Line type="monotone" dataKey={90} stroke="red" />
-				<Line type="monotone" dataKey={75} stroke="#FDE541" />
 				<Line type="monotone" dataKey={50} stroke="#FDE541" />
-				<Line type="monotone" dataKey={25} stroke="green" />
-				<Line type="monotone" dataKey={10} stroke="green" />
-				<Line type="monotone" dataKey={5} stroke="green" />
 				<Line type="monotone" dataKey={2} stroke="green" />
+				<Line type="monotone" dataKey="Rechtes Auge" stroke="black" />
+				<Line type="monotone" dataKey="Linkes Auge" stroke="#00BFFF" />
 			</LineChart>
 		</div>
 	);
 };
 
-export default DetailsGraph;
+export default EyesightGraph;
+
+function mergeObjects(list1: any[], list2: any[], prop: string) {
+	return list1.reduce((acc, obj1) => {
+		const obj2 = list2.find((o) => o[prop] === obj1[prop]);
+		if (obj2) {
+			acc.push({ ...obj1, ...obj2 });
+		} else {
+			acc.push(obj1);
+		}
+		return acc;
+	}, []);
+}

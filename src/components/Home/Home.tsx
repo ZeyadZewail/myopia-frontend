@@ -1,14 +1,14 @@
-import { Box, Table, TableRow, Typography } from "@mui/material";
+import { Box, Table, Typography } from "@mui/material";
 import SearchBar from "../SearchBar/SearchBar";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
 import DetailedSearch from "../DetailedSearch/DetailedSearch";
 import Patient from "../../types/Patient";
-import DetailsController from "../DetailsController/DetailsController";
+import DetailsController from "../Details/DetailsController/DetailsController";
+import PatientRow from "./PatientRow";
 
 const Home = () => {
 	const [patients, setPatients] = useState<Patient[]>([]);
@@ -50,14 +50,18 @@ const Home = () => {
 							<TableCell>Zuletzt bearbeitet</TableCell>
 							<TableCell></TableCell>
 						</TableHead>
-						<TableBody>{patients.map((p) => generateRow(p))}</TableBody>
+						<TableBody>
+							{patients.map((p) => (
+								<PatientRow patient={p} />
+							))}
+						</TableBody>
 					</Table>
 				</TableContainer>
 			</Box>
 			<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
 				{`Anzahl Patienten: ${patients.length}`}
 			</Typography>
-			<DetailsController />
+
 			<Typography fontWeight={"500"} variant="h4">
 				Detailsuche
 			</Typography>
@@ -67,19 +71,3 @@ const Home = () => {
 };
 
 export default Home;
-
-const generateRow = (patient: Patient) => {
-	return (
-		<TableRow key={patient.first_name + patient.first_name + patient.birth_date}>
-			<TableCell>{patient.id.toString().padStart(2, "0")}</TableCell>
-			<TableCell>{`${patient.last_name}`}</TableCell>
-			<TableCell>{`${patient.first_name}`}</TableCell>
-			<TableCell>{patient.birth_date}</TableCell>
-			<TableCell>{new Date(patient.last_update).toUTCString()}</TableCell>
-			<TableCell sx={{ display: "flex", color: "#395FCF", cursor: "pointer", gap: 1 }}>
-				<EditIcon />
-				<Typography>Edit</Typography>
-			</TableCell>
-		</TableRow>
-	);
-};

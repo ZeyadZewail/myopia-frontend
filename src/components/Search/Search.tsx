@@ -5,9 +5,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import EditIcon from "@mui/icons-material/Edit";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import PatientRow from "../Home/PatientRow";
 
 interface Patient {
 	id: Number;
@@ -63,7 +63,7 @@ const Home = () => {
 							<TableCell>Zuletzt bearbeitet</TableCell>
 							<TableCell></TableCell>
 						</TableHead>
-						<TableBody>{patients.length > 0 ? patients.map((p) => generateRow(p)) : null}</TableBody>
+						<TableBody>{patients.length > 0 ? patients.map((p) => <PatientRow patient={p} />) : null}</TableBody>
 					</Table>
 				</TableContainer>
 			</Box>
@@ -75,19 +75,3 @@ const Home = () => {
 };
 
 export default Home;
-
-const generateRow = (patient: Patient) => {
-	return (
-		<TableRow>
-			<TableCell>{patient.id.toString().padStart(2, "0")}</TableCell>
-			<TableCell>{`${patient.last_name}`}</TableCell>
-			<TableCell>{`${patient.first_name}`}</TableCell>
-			<TableCell>{patient.birth_date}</TableCell>
-			<TableCell>{new Date(patient.last_update).toUTCString()}</TableCell>
-			<TableCell sx={{ display: "flex", color: "#395FCF", cursor: "pointer", gap: 1 }}>
-				<EditIcon />
-				<Typography>Edit</Typography>
-			</TableCell>
-		</TableRow>
-	);
-};
