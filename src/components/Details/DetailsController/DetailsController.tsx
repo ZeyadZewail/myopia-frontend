@@ -1,8 +1,9 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import Patient from "../../../types/Patient";
 import DetailsGraph from "../DetailsGraph/DetailsGraph";
 import EyesightGraph from "../EyesightGraph/EyesightGraph";
+import RefractionGraph from "../RefractionGraph/RefrecationGraph";
 
 interface DetailsControllerInterface {
 	patient: Patient;
@@ -12,6 +13,7 @@ const DetailsController: FC<DetailsControllerInterface> = ({ patient }) => {
 	const [data1, setData1] = useState<any[]>([]);
 	const [data2, setData2] = useState<any[]>([]);
 	const [data3, setData3] = useState<any[]>([]);
+	const [data4, setData4] = useState<any[]>([]);
 	const [patientData, setPatientData] = useState<any[]>([]);
 
 	useEffect(() => {
@@ -43,6 +45,10 @@ const DetailsController: FC<DetailsControllerInterface> = ({ patient }) => {
 		let data3 = parseSecond(responseData["secondDiagram"]);
 		console.log(data3);
 		setData3(data3);
+
+		const refractionResponse = await fetch(`/api/refactory/${patient.id}`);
+		const refractionData = await refractionResponse.json();
+		setData4(parseRefraction(refractionData));
 	};
 
 	const getPatientData = async () => {
@@ -69,8 +75,7 @@ const DetailsController: FC<DetailsControllerInterface> = ({ patient }) => {
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
 			<Box sx={{ display: "flex", gap: 2, width: "50%" }}>
-				{patient.gender}
-				{patient.ethnicity}
+				<Typography variant="h2">{patient.first_name + " " + patient.last_name}</Typography>
 			</Box>
 			<Box display={"flex"}>
 				<DetailsGraph data={data1} width={700} height={400} domain={[20]} xLabel={"Alter"} yLabel={"Augenlänge"} />
@@ -80,7 +85,7 @@ const DetailsController: FC<DetailsControllerInterface> = ({ patient }) => {
 					height={400}
 					domain={[-0.1, 0.45]}
 					xLabel={"Alter"}
-					yLabel={"Augenlängenzunahme"}
+					yLabel={"Achsenlänge [mm]"}
 				/>
 			</Box>
 			<Box display={"flex"}>
@@ -90,9 +95,10 @@ const DetailsController: FC<DetailsControllerInterface> = ({ patient }) => {
 					height={400}
 					domain={[-0.2]}
 					xLabel={"Alter"}
-					yLabel={"Achsenlänge [mm]"}
+					yLabel={"Achslängenwachstum [mm]"}
 					patientData={patientData}
 				/>
+				<RefractionGraph data={data4} width={700} height={400} domain={[0, 3]} xLabel={"Alter"} yLabel={"Refraktion"} />
 			</Box>
 		</Box>
 	);
@@ -146,6 +152,21 @@ const parsePatientData = (data: any) => {
 
 		data1[counter] = { ...data1[counter], ["Rechtes Auge"]: Number(data[i]["ra_growth_per_year"]).toFixed(3) };
 		data1[counter] = { ...data1[counter], ["Linkes Auge"]: Number(data[i]["la_growth_per_year"]).toFixed(3) };
+		counter++;
+	}
+
+	return data1;
+};
+
+const parseRefraction = (data: any) => {
+	const data1 = [];
+
+	let counter = 0;
+	for (let i in data) {
+		data1.push({ name: data[i]["id"].toString() });
+
+		data1[counter] = { ...data1[counter], ["Right refraction"]: Number(data[i]["refactory_right"]).toFixed(3) };
+		data1[counter] = { ...data1[counter], ["Left refraction"]: Number(data[i]["refactory_left"]).toFixed(3) };
 		counter++;
 	}
 
