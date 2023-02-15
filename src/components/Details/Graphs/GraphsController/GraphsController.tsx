@@ -1,9 +1,9 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import Patient from "../../../../types/Patient";
-import DetailsGraph from "../../DetailsGraph/DetailsGraph";
-import EyesightGraph from "../../EyesightGraph/EyesightGraph";
-import RefractionGraph from "../../RefractionGraph/RefrecationGraph";
+import DetailsGraph from "../DetailsGraph/DetailsGraph";
+import EyesightGraph from "../EyesightGraph/EyesightGraph";
+import RefractionGraph from "../RefractionGraph/RefractionGraph";
 
 interface DetailsControllerInterface {
 	patient: Patient;

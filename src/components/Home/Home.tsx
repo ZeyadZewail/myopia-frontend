@@ -7,7 +7,6 @@ import TableCell from "@mui/material/TableCell";
 import { useEffect, useState } from "react";
 import DetailedSearch from "../DetailedSearch/DetailedSearch";
 import Patient from "../../types/Patient";
-import DetailsController from "../Details/DetailsController/DetailsController";
 import PatientRow from "./PatientRow";
 
 const Home = () => {
