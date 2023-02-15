@@ -1,15 +1,15 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
-import Patient from "../../../types/Patient";
-import DetailsGraph from "../DetailsGraph/DetailsGraph";
-import EyesightGraph from "../EyesightGraph/EyesightGraph";
-import RefractionGraph from "../RefractionGraph/RefrecationGraph";
+import Patient from "../../../../types/Patient";
+import DetailsGraph from "../../DetailsGraph/DetailsGraph";
+import EyesightGraph from "../../EyesightGraph/EyesightGraph";
+import RefractionGraph from "../../RefractionGraph/RefrecationGraph";
 
 interface DetailsControllerInterface {
 	patient: Patient;
 }
 
-const DetailsController: FC<DetailsControllerInterface> = ({ patient }) => {
+const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
 	const [data1, setData1] = useState<any[]>([]);
 	const [data2, setData2] = useState<any[]>([]);
 	const [data3, setData3] = useState<any[]>([]);
@@ -104,7 +104,7 @@ const DetailsController: FC<DetailsControllerInterface> = ({ patient }) => {
 	);
 };
 
-export default DetailsController;
+export default GraphsController;
 
 const parseFirst = (data: any) => {
 	const data1 = [];

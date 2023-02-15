@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Patient from "../../types/Patient";
-import DetailsController from "./DetailsController/DetailsController";
+import GraphsController from "./Graphs/GraphsController/GraphsController";
 
 const Details = () => {
 	const { id } = useParams();
@@ -29,7 +29,7 @@ const Details = () => {
 
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", width: "100%", padding: 12, gap: 4 }}>
-			<DetailsController patient={patient} />
+			<GraphsController patient={patient} />
 		</Box>
 	);
 };
