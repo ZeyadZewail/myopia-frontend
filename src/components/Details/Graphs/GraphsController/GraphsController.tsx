@@ -41,12 +41,10 @@ const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
 		setFirstDiagramData2(data2);
 
 		let data3 = parseSecond(responseData["secondDiagram"]);
-		console.log(data3);
 		setSecondDiagramData(data3);
 
 		const refractionResponse = await fetch(`/api/refactory/${patient.id}`);
 		const refractionData = await refractionResponse.json();
-		console.log("refractionData", refractionData);
 		setRefractionDiagramData(parseRefraction(refractionData));
 
 		const measurementDataResponse = await fetch(`/api/measurements/${patient.id}`, requestOptions);
@@ -60,9 +58,6 @@ const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
 
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-			<Box sx={{ display: "flex", gap: 2, width: "50%" }}>
-				<Typography variant="h2">{patient.first_name + " " + patient.last_name}</Typography>
-			</Box>
 			<Box display={"flex"}>
 				<EyesightGraph
 					data={firstDiagramData1}

@@ -24,7 +24,6 @@ const RefractionGraph: FC<RefreactionGraphInterface> = ({ data, width, height, d
 
 	useEffect(() => {
 		data.sort(compare);
-		console.log("data", data);
 	}, [data]);
 
 	return (
