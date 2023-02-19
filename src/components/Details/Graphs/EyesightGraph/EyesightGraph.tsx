@@ -19,7 +19,6 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 		setCombined(mergeObjects(data, patientData, "name"));
 	}, [data, patientData]);
 
-	console.log("combined", combined);
 	return (
 		<div>
 			<Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>
@@ -51,8 +50,8 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 				<Line type="monotone" dataKey={98} stroke="red" />
 				<Line type="monotone" dataKey={50} stroke="#FDE541" />
 				<Line type="monotone" dataKey={2} stroke="green" />
-				<Line type="monotone" dataKey="Rechtes Auge" stroke="black" />
-				<Line type="monotone" dataKey="Linkes Auge" stroke="#00BFFF" />
+				<Line type="monotone" connectNulls dataKey="Rechtes Auge" stroke="black" />
+				<Line type="monotone" connectNulls dataKey="Linkes Auge" stroke="#00BFFF" />
 			</LineChart>
 		</div>
 	);

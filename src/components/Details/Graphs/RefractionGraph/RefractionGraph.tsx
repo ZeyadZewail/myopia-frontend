@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 interface RefreactionGraphInterface {
@@ -12,6 +12,21 @@ interface RefreactionGraphInterface {
 }
 
 const RefractionGraph: FC<RefreactionGraphInterface> = ({ data, width, height, domain, xLabel, yLabel }) => {
+	function compare(a: any, b: any) {
+		if (Number(a.name) < Number(b.name)) {
+			return -1;
+		}
+		if (Number(a.name) > Number(b.name)) {
+			return 1;
+		}
+		return 0;
+	}
+
+	useEffect(() => {
+		data.sort(compare);
+		console.log("data", data);
+	}, [data]);
+
 	return (
 		<div>
 			<Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>

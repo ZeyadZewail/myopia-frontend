@@ -1,7 +1,6 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import Patient from "../../../../types/Patient";
-import DetailsGraph from "../DetailsGraph/DetailsGraph";
 import EyesightGraph from "../EyesightGraph/EyesightGraph";
 import RefractionGraph from "../RefractionGraph/RefractionGraph";
 
@@ -10,19 +9,19 @@ interface DetailsControllerInterface {
 }
 
 const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
-	const [data1, setData1] = useState<any[]>([]);
-	const [data2, setData2] = useState<any[]>([]);
-	const [data3, setData3] = useState<any[]>([]);
-	const [data4, setData4] = useState<any[]>([]);
-	const [patientData, setPatientData] = useState<any[]>([]);
+	const [firstDiagramData1, setFirstDiagramData1] = useState<any[]>([]);
+	const [firstDiagramData2, setFirstDiagramData2] = useState<any[]>([]);
+	const [secondDiagramData, setSecondDiagramData] = useState<any[]>([]);
+	const [refractionDiagramData, setRefractionDiagramData] = useState<any[]>([]);
+	const [measurementData, setMeasurementData] = useState<any[]>([]);
+	const [measurementGrowthData, setMeasurementGrowthData] = useState<any[]>([]);
 
 	useEffect(() => {
 		getData();
-		getPatientData();
 	}, [patient]);
 
 	const getData = async () => {
-		if (!patient.gender || !patient.ethnicity) {
+		if (!patient.gender || !patient.ethnicity || !patient.id) {
 			return;
 		}
 
@@ -36,40 +35,27 @@ const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
 
 		const response = await fetch(`/api/data/?gender=${patient.gender}&ethnicity=${patient.ethnicity}`, requestOptions);
 		const responseData = await response.json();
-		console.log("response", responseData);
 		let [data1, data2] = parseFirst(responseData["firstDiagram"]);
 
-		setData1(data1);
-		setData2(data2);
+		setFirstDiagramData1(data1);
+		setFirstDiagramData2(data2);
 
 		let data3 = parseSecond(responseData["secondDiagram"]);
 		console.log(data3);
-		setData3(data3);
+		setSecondDiagramData(data3);
 
 		const refractionResponse = await fetch(`/api/refactory/${patient.id}`);
 		const refractionData = await refractionResponse.json();
-		setData4(parseRefraction(refractionData));
-	};
+		console.log("refractionData", refractionData);
+		setRefractionDiagramData(parseRefraction(refractionData));
 
-	const getPatientData = async () => {
-		if (!patient.id) {
-			return;
-		}
+		const measurementDataResponse = await fetch(`/api/measurements/${patient.id}`, requestOptions);
+		const measurementData = await measurementDataResponse.json();
+		setMeasurementData(parseMeasurementData(measurementData));
 
-		const requestOptions = {
-			method: "GET",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-		};
-
-		const response = await fetch(`/api/measurements/growth/${patient.id}`, requestOptions);
-		const responseData = await response.json();
-
-		let data = parsePatientData(responseData);
-		console.log("patientData", data);
-		setPatientData(data);
+		const measurementGrowthDataResponse = await fetch(`/api/measurements/growth/${patient.id}`, requestOptions);
+		const measurementGrowthData = await measurementGrowthDataResponse.json();
+		setMeasurementGrowthData(parseMeasurementGrowthData(measurementGrowthData));
 	};
 
 	return (
@@ -78,27 +64,42 @@ const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
 				<Typography variant="h2">{patient.first_name + " " + patient.last_name}</Typography>
 			</Box>
 			<Box display={"flex"}>
-				<DetailsGraph data={data1} width={700} height={400} domain={[20]} xLabel={"Alter"} yLabel={"Augenlänge"} />
-				<DetailsGraph
-					data={data2}
+				<EyesightGraph
+					data={firstDiagramData1}
 					width={700}
 					height={400}
-					domain={[-0.1, 0.45]}
+					domain={[20]}
 					xLabel={"Alter"}
-					yLabel={"Achsenlänge [mm]"}
+					yLabel={"Augenlänge"}
+					patientData={measurementData}
 				/>
-			</Box>
-			<Box display={"flex"}>
 				<EyesightGraph
-					data={data3}
+					data={secondDiagramData}
 					width={700}
 					height={400}
 					domain={[-0.2]}
 					xLabel={"Alter"}
 					yLabel={"Achslängenwachstum [mm]"}
-					patientData={patientData}
+					patientData={measurementGrowthData}
 				/>
-				<RefractionGraph data={data4} width={700} height={400} domain={[0, 3]} xLabel={"Alter"} yLabel={"Refraktion"} />
+				{/* <DetailsGraph
+					data={firstDiagramData2}
+					width={700}
+					height={400}
+					domain={[-0.1, 0.45]}
+					xLabel={"Alter"}
+					yLabel={"Achsenlänge [mm]"}
+				/> */}
+			</Box>
+			<Box display={"flex"}>
+				<RefractionGraph
+					data={refractionDiagramData}
+					width={700}
+					height={400}
+					domain={[0, 3]}
+					xLabel={"Alter"}
+					yLabel={"Refraktion"}
+				/>
 			</Box>
 		</Box>
 	);
@@ -143,7 +144,22 @@ const parseSecond = (data: any) => {
 	return data1;
 };
 
-const parsePatientData = (data: any) => {
+const parseMeasurementData = (data: any) => {
+	const data1 = [];
+
+	let counter = 0;
+	for (let i in data) {
+		data1.push({ name: data[i]["age"].toString() });
+
+		data1[counter] = { ...data1[counter], ["Rechtes Auge"]: Number(data[i]["ra_achslaenge"]).toFixed(3) };
+		data1[counter] = { ...data1[counter], ["Linkes Auge"]: Number(data[i]["la_achslaenge"]).toFixed(3) };
+		counter++;
+	}
+
+	return data1;
+};
+
+const parseMeasurementGrowthData = (data: any) => {
 	const data1 = [];
 
 	let counter = 0;
