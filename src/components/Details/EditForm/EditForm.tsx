@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Dialog, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, ButtonProps, Dialog, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -6,7 +6,9 @@ import { format, parseISO } from "date-fns";
 import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import Patient from "../../../types/Patient";
+import { red } from "@mui/material/colors";
 
 interface EditFormInterface {
 	patient: Patient;
@@ -15,6 +17,7 @@ interface EditFormInterface {
 const EditForm: FC<EditFormInterface> = ({ patient }) => {
 	const [error, setError] = useState("");
 	const [dialogMessage, setDialogMessage] = useState("");
+	const [warningMessage, setWarningMessage] = useState("");
 	const navigate = useNavigate();
 
 	const {
@@ -68,6 +71,22 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 		}
 	};
 
+	const onDelete = async () => {
+		const requestOptions = {
+			method: "DELETE",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		};
+
+		const response = await fetch(`/api/patients/${patient.id}`, requestOptions);
+		const responseData = await response.json();
+		console.log(responseData);
+
+		return;
+	};
+
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 4 }}>
 			<Dialog
@@ -85,17 +104,60 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 					sx={{ width: "fit-content", alignSelf: "center" }}
 					variant="contained"
 					onClick={() => {
-						setDialogMessage("");
+						dialogMessage != "Deleted Successfully" ? setDialogMessage("") : navigate("/");
 					}}>
 					Ok
 				</Button>
 			</Dialog>
+			<Dialog
+				open={warningMessage != ""}
+				PaperProps={{
+					style: {
+						gap: 20,
+						padding: 20,
+						width: "fit-Content",
+					},
+				}}>
+				<Alert sx={{ fontSize: 18, background: "inherit", alignItems: "center" }} severity="warning">
+					{warningMessage}
+				</Alert>
+				<Box sx={{ display: "flex", gap: 4, justifyContent: "center" }}>
+					<ColorButton
+						sx={{ width: "fit-content", alignSelf: "center" }}
+						variant="contained"
+						onClick={async () => {
+							setWarningMessage("");
+							onDelete();
+							setDialogMessage("Deleted Successfully");
+						}}>
+						Yes
+					</ColorButton>
+					<Button
+						sx={{ width: "fit-content", alignSelf: "center" }}
+						variant="contained"
+						onClick={() => {
+							setWarningMessage("");
+						}}>
+						No
+					</Button>
+				</Box>
+			</Dialog>
 			<Box sx={{ display: "flex", gap: 2, width: "100%" }}>
 				<Typography variant="h2">{patient.first_name + ", " + patient.last_name}</Typography>
 			</Box>
-			<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
-				Übersicht
-			</Typography>
+			<Box sx={{ display: "flex", justifyContent: "space-between", width: "30%" }}>
+				<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
+					Übersicht
+				</Typography>
+				<ColorButton
+					variant="contained"
+					sx={{ backgroundColor: "red" }}
+					onClick={() => {
+						setWarningMessage(`Are you Sure you want to delete ${patient.first_name} ${patient.last_name}?`);
+					}}>
+					Delete
+				</ColorButton>
+			</Box>
 			<Box component="form" sx={{ width: "30%", display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
 				<TextField
@@ -170,3 +232,11 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 };
 
 export default EditForm;
+
+const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+	color: theme.palette.getContrastText(red[500]),
+	backgroundColor: red[500],
+	"&:hover": {
+		backgroundColor: red[700],
+	},
+}));
