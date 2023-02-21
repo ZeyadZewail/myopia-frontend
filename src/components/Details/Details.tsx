@@ -9,6 +9,7 @@ import EditForm from "./EditForm/EditForm";
 import GeneralRisks from "./GeneralRisks/GeneralRisks";
 import GraphsController from "./Graphs/GraphsController/GraphsController";
 import MeasurementForm from "./MeasurementForm/MeasurementForm";
+import Measurements from "./Measurements/Measurements";
 import RefractionForm from "./RefractionForm/RefractionForm";
 
 const Details = () => {
@@ -119,6 +120,14 @@ const Details = () => {
 							aeugenlange={measurementData[0]}
 							augenlangenzunahme={measurementGrowthData.at(-1)}
 							augenlangenzunahme_diff={refractionDiagramData.at(-1)}
+						/>
+						<Measurements
+							firstDiagramData1={firstDiagramData1}
+							firstDiagramData2={firstDiagramData2}
+							secondDiagramData={secondDiagramData}
+							refractionDiagramData={refractionDiagramData}
+							measurementData={measurementData}
+							measurementGrowthData={measurementGrowthData}
 						/>
 					</Box>
 				)}
