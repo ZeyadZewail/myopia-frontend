@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Divider, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import Patient from "../../../../types/Patient";
 import EyesightGraph from "../EyesightGraph/EyesightGraph";
@@ -25,6 +25,9 @@ const GraphsController: FC<DetailsControllerInterface> = ({
 }) => {
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+			<Typography variant="h2" sx={{ width: "fit-Content" }}>
+				Graphs <Divider sx={{ mt: 2 }} />
+			</Typography>
 			<Box display={"flex"}>
 				<EyesightGraph
 					data={firstDiagramData1}

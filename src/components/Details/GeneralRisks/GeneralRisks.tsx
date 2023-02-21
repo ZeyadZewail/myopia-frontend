@@ -93,7 +93,7 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 	};
 
 	return (
-		<Box sx={{ display: "flex", flexDirection: "column", width: "30%", gap: 4 }}>
+		<Box sx={{ display: "flex", flexDirection: "column", width: "60%", gap: 4 }}>
 			<Dialog
 				open={dialogMessage != ""}
 				PaperProps={{
@@ -142,100 +142,112 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 					Allgemeine risiken
 				</Typography>
 			</Box>
-			<Box component="form" sx={{ width: "60%", display: "flex", flexDirection: "column", gap: "inherit" }}>
+			<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
-				<TextField
-					label="myopia beginning age"
-					type="number"
-					helperText={errors?.myopia_beginning_age?.message as string}
-					InputLabelProps={{ shrink: true }}
-					error={Boolean(errors?.myopia_beginning_age)}
-					value={watch("myopia_beginning_age")}
-					{...register("myopia_beginning_age", {
-						required: { value: true, message: "Please enter myopia beginning age" },
-					})}
-				/>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<TextField
+						label="myopia beginning age"
+						type="number"
+						sx={{ width: "45%" }}
+						helperText={errors?.myopia_beginning_age?.message as string}
+						InputLabelProps={{ shrink: true }}
+						error={Boolean(errors?.myopia_beginning_age)}
+						value={watch("myopia_beginning_age")}
+						{...register("myopia_beginning_age", {
+							required: { value: true, message: "Please enter myopia beginning age" },
+						})}
+					/>
 
-				<TextField
-					label="nr myopic parents"
-					type="number"
-					helperText={errors?.nr_myopic_parents?.message as string}
-					error={Boolean(errors?.nr_myopic_parents)}
-					InputLabelProps={{ shrink: true }}
-					value={watch("nr_myopic_parents")}
-					{...register("nr_myopic_parents", {
-						required: { value: true, message: "Please enter nr myopic parents" },
-					})}
-				/>
+					<TextField
+						label="nr myopic parents"
+						type="number"
+						sx={{ width: "45%" }}
+						helperText={errors?.nr_myopic_parents?.message as string}
+						error={Boolean(errors?.nr_myopic_parents)}
+						InputLabelProps={{ shrink: true }}
+						value={watch("nr_myopic_parents")}
+						{...register("nr_myopic_parents", {
+							required: { value: true, message: "Please enter nr myopic parents" },
+						})}
+					/>
+				</Box>
 
-				<TextField
-					label="first parent dioptres"
-					type="number"
-					helperText={errors?.nr_myopic_parents?.message as string}
-					error={Boolean(errors?.nr_myopic_parents)}
-					InputLabelProps={{ shrink: true }}
-					value={watch("first_parent_dioptres")}
-					{...register("first_parent_dioptres", {
-						required: { value: true, message: "Please enter first parent dioptres" },
-					})}
-				/>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<TextField
+						sx={{ width: "45%" }}
+						label="first parent dioptres"
+						type="number"
+						helperText={errors?.nr_myopic_parents?.message as string}
+						error={Boolean(errors?.nr_myopic_parents)}
+						InputLabelProps={{ shrink: true }}
+						value={watch("first_parent_dioptres")}
+						{...register("first_parent_dioptres", {
+							required: { value: true, message: "Please enter first parent dioptres" },
+						})}
+					/>
 
-				<TextField
-					label="second parent dioptres"
-					type="number"
-					helperText={errors?.nr_myopic_parents?.message as string}
-					error={Boolean(errors?.nr_myopic_parents)}
-					InputLabelProps={{ shrink: true }}
-					value={watch("second_parent_dioptres")}
-					{...register("second_parent_dioptres", {
-						required: { value: true, message: "Please enter second parent dioptres" },
-					})}
-				/>
+					<TextField
+						sx={{ width: "45%" }}
+						label="second parent dioptres"
+						type="number"
+						helperText={errors?.nr_myopic_parents?.message as string}
+						error={Boolean(errors?.nr_myopic_parents)}
+						InputLabelProps={{ shrink: true }}
+						value={watch("second_parent_dioptres")}
+						{...register("second_parent_dioptres", {
+							required: { value: true, message: "Please enter second parent dioptres" },
+						})}
+					/>
+				</Box>
 
-				<FormControlLabel
-					control={
-						<Controller
-							name="asian_heritage"
-							control={control}
-							render={({ field: props }) => (
-								<Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
-							)}
-						/>
-					}
-					label="asian heritage"
-				/>
+				<Box>
+					<FormControlLabel
+						control={
+							<Controller
+								name="asian_heritage"
+								control={control}
+								render={({ field: props }) => (
+									<Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
+								)}
+							/>
+						}
+						label="asian heritage"
+					/>
 
-				<FormControlLabel
-					control={
-						<Controller
-							name="predisposing_syndromes"
-							control={control}
-							render={({ field: props }) => (
-								<Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
-							)}
-						/>
-					}
-					label="predisposing syndromes"
-				/>
+					<FormControlLabel
+						control={
+							<Controller
+								name="predisposing_syndromes"
+								control={control}
+								render={({ field: props }) => (
+									<Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
+								)}
+							/>
+						}
+						label="predisposing syndromes"
+					/>
+				</Box>
 
-				<TextField
-					label="hours outside per day"
-					type="number"
-					helperText={errors?.nr_myopic_parents?.message as string}
-					error={Boolean(errors?.nr_myopic_parents)}
-					InputLabelProps={{ shrink: true }}
-					value={watch("hours_outside_per_day")}
-					{...register("hours_outside_per_day", {
-						required: { value: true, message: "Please enter second hours outside per day" },
-					})}
-				/>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<TextField
+						label="hours outside per day"
+						type="number"
+						helperText={errors?.nr_myopic_parents?.message as string}
+						error={Boolean(errors?.nr_myopic_parents)}
+						InputLabelProps={{ shrink: true }}
+						value={watch("hours_outside_per_day")}
+						{...register("hours_outside_per_day", {
+							required: { value: true, message: "Please enter second hours outside per day" },
+						})}
+					/>
 
-				<Button
-					variant="contained"
-					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
-					onClick={handleSubmit(onSubmit)}>
-					Update
-				</Button>
+					<Button
+						variant="contained"
+						sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+						onClick={handleSubmit(onSubmit)}>
+						Update
+					</Button>
+				</Box>
 			</Box>
 		</Box>
 	);

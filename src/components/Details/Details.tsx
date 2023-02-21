@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Patient from "../../types/Patient";
@@ -95,12 +95,15 @@ const Details = () => {
 				) : (
 					<Box sx={{ display: "flex", flexDirection: "column", gap: 6 }}>
 						<Box sx={{ display: "flex", gap: 0, width: "100%" }}>
-							<Typography variant="h2">{patient.first_name + ", " + patient.last_name}</Typography>
+							<Typography variant="h2">
+								{patient.first_name + ", " + patient.last_name} <Divider sx={{ mt: 2 }} />
+							</Typography>
 						</Box>
-						<Box sx={{ display: "flex" }}>
+						<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
 							<EditForm patient={patient} />
 							<MeasurementForm patient={patient} />
 							<RefractionForm patient={patient} />
+							<GeneralRisks patient={patient} />
 						</Box>
 						<GraphsController
 							patient={patient}
@@ -111,7 +114,6 @@ const Details = () => {
 							measurementData={measurementData}
 							measurementGrowthData={measurementGrowthData}
 						/>
-						<GeneralRisks patient={patient} />
 						<Analysis
 							id={patient.id}
 							aeugenlange={measurementData[0]}

@@ -1,4 +1,4 @@
-import { Alert, Box, Button, ButtonProps, Dialog, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, ButtonProps, Dialog, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -91,7 +91,7 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 	};
 
 	return (
-		<Box sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 4 }}>
+		<Box sx={{ display: "flex", flexDirection: "column", width: "60%", gap: 4 }}>
 			<Dialog
 				open={dialogMessage != ""}
 				PaperProps={{
@@ -145,87 +145,92 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 					</Button>
 				</Box>
 			</Dialog>
-			<Box sx={{ display: "flex", justifyContent: "space-between", width: "60%" }}>
-				<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
-					Übersicht
-				</Typography>
-				<ColorButton
-					variant="contained"
-					sx={{ backgroundColor: "red" }}
-					onClick={() => {
-						setWarningMessage(`Are you Sure you want to delete ${patient.first_name} ${patient.last_name}?`);
-					}}>
-					Delete
-				</ColorButton>
-			</Box>
-			<Box component="form" sx={{ width: "60%", display: "flex", flexDirection: "column", gap: "inherit" }}>
+			<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
+				Übersicht
+			</Typography>
+			<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
-				<TextField
-					label="Vorname"
-					helperText={errors?.first_name?.message as string}
-					InputLabelProps={{ shrink: true }}
-					error={Boolean(errors?.first_name)}
-					value={watch("first_name")}
-					{...register("first_name", {
-						required: { value: true, message: "Please enter Vorname" },
-					})}
-				/>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<TextField
+						label="Vorname"
+						sx={{ width: "45%" }}
+						helperText={errors?.first_name?.message as string}
+						InputLabelProps={{ shrink: true }}
+						error={Boolean(errors?.first_name)}
+						value={watch("first_name")}
+						{...register("first_name", {
+							required: { value: true, message: "Please enter Vorname" },
+						})}
+					/>
 
-				<TextField
-					label="Nachname"
-					helperText={errors?.last_name?.message as string}
-					error={Boolean(errors?.last_name)}
-					InputLabelProps={{ shrink: true }}
-					value={watch("last_name")}
-					{...register("last_name", {
-						required: { value: true, message: "Please enter Nachname" },
-					})}
-				/>
-				<Controller
-					control={control}
-					name={"gender"}
-					defaultValue="male"
-					render={({ field: { onChange, value } }) => (
-						<Select onChange={onChange} value={value} defaultValue="male">
-							<MenuItem value={"male"}>Male</MenuItem>
-							<MenuItem value={"female"}>Female</MenuItem>
-						</Select>
-					)}
-				/>
-				<Controller
-					control={control}
-					name={"ethnicity"}
-					defaultValue="caucasian"
-					render={({ field: { onChange, value } }) => (
-						<Select onChange={onChange} value={value} defaultValue="caucasian">
-							<MenuItem value={"caucasian"}>Caucasian</MenuItem>
-							<MenuItem value={"asian"}>Asian</MenuItem>
-							<MenuItem value={"other"}>Other</MenuItem>
-						</Select>
-					)}
-				/>
-
-				<Controller
-					name={"birth_date"}
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<LocalizationProvider dateAdapter={AdapterDateFns}>
-							<DesktopDatePicker
-								label="Geburtsdatum"
-								inputFormat="yyyy-MM-dd"
-								value={watch("birth_date")}
-								onChange={onChange}
-								renderInput={(params) => <TextField {...params} />}
-							/>
-						</LocalizationProvider>
-					)}
-				/>
-				<Button
-					variant="contained"
-					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
-					onClick={handleSubmit(onSubmit)}>
-					Update
-				</Button>
+					<TextField
+						label="Nachname"
+						sx={{ width: "45%" }}
+						helperText={errors?.last_name?.message as string}
+						error={Boolean(errors?.last_name)}
+						InputLabelProps={{ shrink: true }}
+						value={watch("last_name")}
+						{...register("last_name", {
+							required: { value: true, message: "Please enter Nachname" },
+						})}
+					/>
+				</Box>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<Controller
+						control={control}
+						name={"gender"}
+						defaultValue="male"
+						render={({ field: { onChange, value } }) => (
+							<Select onChange={onChange} value={value} defaultValue="male" sx={{ width: "45%" }}>
+								<MenuItem value={"male"}>Male</MenuItem>
+								<MenuItem value={"female"}>Female</MenuItem>
+							</Select>
+						)}
+					/>
+					<Controller
+						control={control}
+						name={"ethnicity"}
+						defaultValue="caucasian"
+						render={({ field: { onChange, value } }) => (
+							<Select onChange={onChange} value={value} defaultValue="caucasian" sx={{ width: "45%" }}>
+								<MenuItem value={"caucasian"}>Caucasian</MenuItem>
+								<MenuItem value={"asian"}>Asian</MenuItem>
+								<MenuItem value={"other"}>Other</MenuItem>
+							</Select>
+						)}
+					/>
+				</Box>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<Controller
+						name={"birth_date"}
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<LocalizationProvider dateAdapter={AdapterDateFns}>
+								<DesktopDatePicker
+									label="Geburtsdatum"
+									inputFormat="yyyy-MM-dd"
+									value={watch("birth_date")}
+									onChange={onChange}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</LocalizationProvider>
+						)}
+					/>
+					<Button
+						variant="contained"
+						sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+						onClick={handleSubmit(onSubmit)}>
+						Update
+					</Button>
+					<ColorButton
+						variant="contained"
+						sx={{ backgroundColor: "red", fontSize: 16, height: "fit-Content", alignSelf: "center" }}
+						onClick={() => {
+							setWarningMessage(`Are you Sure you want to delete ${patient.first_name} ${patient.last_name}?`);
+						}}>
+						Delete
+					</ColorButton>
+				</Box>
 			</Box>
 		</Box>
 	);

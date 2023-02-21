@@ -70,7 +70,7 @@ const RefractionForm: FC<RefractionFormInterface> = ({ patient }) => {
 	};
 
 	return (
-		<Box sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 4 }}>
+		<Box sx={{ display: "flex", flexDirection: "column", width: "60%", gap: 4 }}>
 			<Dialog
 				open={dialogMessage != ""}
 				PaperProps={{
@@ -119,51 +119,57 @@ const RefractionForm: FC<RefractionFormInterface> = ({ patient }) => {
 				Refraktion
 			</Typography>
 
-			<Box component="form" sx={{ width: "60%", display: "flex", flexDirection: "column", gap: "inherit" }}>
+			<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
-				<TextField
-					label="Refactory right"
-					helperText={errors?.refactory_right?.message as string}
-					InputLabelProps={{ shrink: true }}
-					error={Boolean(errors?.refactory_right)}
-					value={watch("refactory_right")}
-					{...register("refactory_right", {
-						required: { value: true, message: "Please enter Refactory right" },
-					})}
-				/>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<TextField
+						label="Refactory right"
+						sx={{ width: "45%" }}
+						helperText={errors?.refactory_right?.message as string}
+						InputLabelProps={{ shrink: true }}
+						error={Boolean(errors?.refactory_right)}
+						value={watch("refactory_right")}
+						{...register("refactory_right", {
+							required: { value: true, message: "Please enter Refactory right" },
+						})}
+					/>
 
-				<TextField
-					label="refactory_left"
-					helperText={errors?.refactory_left?.message as string}
-					error={Boolean(errors?.refactory_left)}
-					InputLabelProps={{ shrink: true }}
-					value={watch("refactory_left")}
-					{...register("refactory_left", {
-						required: { value: true, message: "Please enter Refactory left" },
-					})}
-				/>
+					<TextField
+						label="refactory_left"
+						sx={{ width: "45%" }}
+						helperText={errors?.refactory_left?.message as string}
+						error={Boolean(errors?.refactory_left)}
+						InputLabelProps={{ shrink: true }}
+						value={watch("refactory_left")}
+						{...register("refactory_left", {
+							required: { value: true, message: "Please enter Refactory left" },
+						})}
+					/>
+				</Box>
 
-				<Controller
-					name={"timestamp_created"}
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<LocalizationProvider dateAdapter={AdapterDateFns}>
-							<DesktopDatePicker
-								label="Geburtsdatum"
-								inputFormat="yyyy-MM-dd"
-								value={watch("timestamp_created")}
-								onChange={onChange}
-								renderInput={(params) => <TextField {...params} />}
-							/>
-						</LocalizationProvider>
-					)}
-				/>
-				<Button
-					variant="contained"
-					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
-					onClick={handleSubmit(onSubmit)}>
-					Update
-				</Button>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<Controller
+						name={"timestamp_created"}
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<LocalizationProvider dateAdapter={AdapterDateFns}>
+								<DesktopDatePicker
+									label="Geburtsdatum"
+									inputFormat="yyyy-MM-dd"
+									value={watch("timestamp_created")}
+									onChange={onChange}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</LocalizationProvider>
+						)}
+					/>
+					<Button
+						variant="contained"
+						sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+						onClick={handleSubmit(onSubmit)}>
+						Update
+					</Button>
+				</Box>
 			</Box>
 		</Box>
 	);

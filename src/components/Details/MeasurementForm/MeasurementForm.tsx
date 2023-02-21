@@ -122,49 +122,55 @@ const MeasurementForm: FC<MeasurementFormInterface> = ({ patient }) => {
 
 			<Box component="form" sx={{ width: "60%", display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
-				<TextField
-					label="Ra achslaenge"
-					helperText={errors?.ra_achslaenge?.message as string}
-					InputLabelProps={{ shrink: true }}
-					error={Boolean(errors?.ra_achslaenge)}
-					value={watch("ra_achslaenge")}
-					{...register("ra_achslaenge", {
-						required: { value: true, message: "Please enter Ra achslaenge" },
-					})}
-				/>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<TextField
+						label="Ra achslaenge"
+						sx={{ width: "45%" }}
+						helperText={errors?.ra_achslaenge?.message as string}
+						InputLabelProps={{ shrink: true }}
+						error={Boolean(errors?.ra_achslaenge)}
+						value={watch("ra_achslaenge")}
+						{...register("ra_achslaenge", {
+							required: { value: true, message: "Please enter Ra achslaenge" },
+						})}
+					/>
 
-				<TextField
-					label="la_achslaenge"
-					helperText={errors?.la_achslaenge?.message as string}
-					error={Boolean(errors?.la_achslaenge)}
-					InputLabelProps={{ shrink: true }}
-					value={watch("la_achslaenge")}
-					{...register("la_achslaenge", {
-						required: { value: true, message: "Please enter La achslaenge" },
-					})}
-				/>
+					<TextField
+						label="la_achslaenge"
+						sx={{ width: "45%" }}
+						helperText={errors?.la_achslaenge?.message as string}
+						error={Boolean(errors?.la_achslaenge)}
+						InputLabelProps={{ shrink: true }}
+						value={watch("la_achslaenge")}
+						{...register("la_achslaenge", {
+							required: { value: true, message: "Please enter La achslaenge" },
+						})}
+					/>
+				</Box>
 
-				<Controller
-					name={"timestamp_created"}
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<LocalizationProvider dateAdapter={AdapterDateFns}>
-							<DesktopDatePicker
-								label="Geburtsdatum"
-								inputFormat="yyyy-MM-dd"
-								value={watch("timestamp_created")}
-								onChange={onChange}
-								renderInput={(params) => <TextField {...params} />}
-							/>
-						</LocalizationProvider>
-					)}
-				/>
-				<Button
-					variant="contained"
-					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
-					onClick={handleSubmit(onSubmit)}>
-					Update
-				</Button>
+				<Box sx={{ display: "flex", gap: 2 }}>
+					<Controller
+						name={"timestamp_created"}
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<LocalizationProvider dateAdapter={AdapterDateFns}>
+								<DesktopDatePicker
+									label="Geburtsdatum"
+									inputFormat="yyyy-MM-dd"
+									value={watch("timestamp_created")}
+									onChange={onChange}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</LocalizationProvider>
+						)}
+					/>
+					<Button
+						variant="contained"
+						sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+						onClick={handleSubmit(onSubmit)}>
+						Update
+					</Button>
+				</Box>
 			</Box>
 		</Box>
 	);
