@@ -18,7 +18,6 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 	useEffect(() => {
 		setCombined(mergeObjects(data, patientData, "name"));
 	}, [data, patientData]);
-
 	return (
 		<div>
 			<Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>
@@ -60,13 +59,22 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 export default EyesightGraph;
 
 function mergeObjects(list1: any[], list2: any[], prop: string) {
-	return list1.reduce((acc, obj1) => {
-		const obj2 = list2.find((o) => o[prop] === obj1[prop]);
-		if (obj2) {
-			acc.push({ ...obj1, ...obj2 });
-		} else {
-			acc.push(obj1);
-		}
-		return acc;
-	}, []);
+	return [
+		...list1.reduce((acc, obj1) => {
+			const obj2 = list2.find((o) => o[prop] === obj1[prop]);
+			if (obj2) {
+				acc.push({ ...obj1, ...obj2 });
+			} else {
+				acc.push(obj1);
+			}
+			return acc;
+		}, []),
+		...list2.reduce((acc, obj1) => {
+			const obj2 = list1.find((o) => o[prop] === obj1[prop]);
+			if (!obj2) {
+				acc.push(obj1);
+			}
+			return acc;
+		}, []),
+	];
 }

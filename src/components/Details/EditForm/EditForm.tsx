@@ -61,13 +61,16 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 
 		const response = await fetch(`/api/patients/${patient.id}`, requestOptions);
 		const responseData = await response.json();
-		if (response.status == 409) {
+		if (response.status == 404) {
 			setError(responseData.detail);
 		}
 
 		if (response.ok) {
 			setError("");
 			setDialogMessage("Updated Successfully!");
+		} else {
+			console.log("error", responseData);
+			setWarningMessage("Something Went Wrong");
 		}
 	};
 
@@ -104,7 +107,7 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 					sx={{ width: "fit-content", alignSelf: "center" }}
 					variant="contained"
 					onClick={() => {
-						dialogMessage != "Deleted Successfully" ? setDialogMessage("") : navigate("/");
+						dialogMessage != "Deleted Successfully" ? navigate(0) : navigate("/");
 					}}>
 					Ok
 				</Button>
@@ -142,10 +145,7 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 					</Button>
 				</Box>
 			</Dialog>
-			<Box sx={{ display: "flex", gap: 2, width: "100%" }}>
-				<Typography variant="h2">{patient.first_name + ", " + patient.last_name}</Typography>
-			</Box>
-			<Box sx={{ display: "flex", justifyContent: "space-between", width: "30%" }}>
+			<Box sx={{ display: "flex", justifyContent: "space-between", width: "60%" }}>
 				<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
 					Übersicht
 				</Typography>
@@ -158,7 +158,7 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 					Delete
 				</ColorButton>
 			</Box>
-			<Box component="form" sx={{ width: "30%", display: "flex", flexDirection: "column", gap: "inherit" }}>
+			<Box component="form" sx={{ width: "60%", display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
 				<TextField
 					label="Vorname"

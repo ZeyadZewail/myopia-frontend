@@ -54,8 +54,8 @@ const RefractionGraph: FC<RefreactionGraphInterface> = ({ data, width, height, d
 					}}
 				/>
 
-				<Line type="monotone" dataKey={"Right refraction"} stroke="red" />
-				<Line type="monotone" dataKey={"Left refraction"} stroke="green" />
+				<Line type="monotone" dataKey={"Right refraction"} stroke="black" />
+				<Line type="monotone" dataKey={"Left refraction"} stroke="#00BFFF" />
 			</LineChart>
 		</div>
 	);

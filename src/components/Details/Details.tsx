@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Patient from "../../types/Patient";
@@ -6,6 +6,8 @@ import Error404 from "../Error404/Error404";
 import Loading from "../Loading/Loading";
 import EditForm from "./EditForm/EditForm";
 import GraphsController from "./Graphs/GraphsController/GraphsController";
+import MeasurementForm from "./MeasurementForm/MeasurementForm";
+import RefractionForm from "./RefractionForm/RefractionForm";
 
 const Details = () => {
 	const { id } = useParams();
@@ -43,9 +45,17 @@ const Details = () => {
 				{loading ? (
 					<Loading />
 				) : (
-					<Fragment>
-						<EditForm patient={patient} /> <GraphsController patient={patient} />
-					</Fragment>
+					<Box sx={{ display: "flex", flexDirection: "column", gap: 6 }}>
+						<Box sx={{ display: "flex", gap: 0, width: "100%" }}>
+							<Typography variant="h2">{patient.first_name + ", " + patient.last_name}</Typography>
+						</Box>
+						<Box sx={{ display: "flex" }}>
+							<EditForm patient={patient} />
+							<MeasurementForm patient={patient} />
+							<RefractionForm patient={patient} />
+						</Box>
+						<GraphsController patient={patient} />
+					</Box>
 				)}
 			</Error404>
 		</Box>

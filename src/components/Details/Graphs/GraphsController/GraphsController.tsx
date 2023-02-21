@@ -45,6 +45,7 @@ const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
 
 		const refractionResponse = await fetch(`/api/refactory/${patient.id}`);
 		const refractionData = await refractionResponse.json();
+		console.log("refactory", refractionData);
 		setRefractionDiagramData(parseRefraction(refractionData));
 
 		const measurementDataResponse = await fetch(`/api/measurements/${patient.id}`, requestOptions);
@@ -77,14 +78,6 @@ const GraphsController: FC<DetailsControllerInterface> = ({ patient }) => {
 					yLabel={"Achslängenwachstum [mm]"}
 					patientData={measurementGrowthData}
 				/>
-				{/* <DetailsGraph
-					data={firstDiagramData2}
-					width={700}
-					height={400}
-					domain={[-0.1, 0.45]}
-					xLabel={"Alter"}
-					yLabel={"Achsenlänge [mm]"}
-				/> */}
 			</Box>
 			<Box display={"flex"}>
 				<RefractionGraph
