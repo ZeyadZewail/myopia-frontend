@@ -5,6 +5,7 @@ import Patient from "../../types/Patient";
 import Error404 from "../Error404/Error404";
 import Loading from "../Loading/Loading";
 import EditForm from "./EditForm/EditForm";
+import GeneralRisks from "./GeneralRisks/GeneralRisks";
 import GraphsController from "./Graphs/GraphsController/GraphsController";
 import MeasurementForm from "./MeasurementForm/MeasurementForm";
 import RefractionForm from "./RefractionForm/RefractionForm";
@@ -55,6 +56,7 @@ const Details = () => {
 							<RefractionForm patient={patient} />
 						</Box>
 						<GraphsController patient={patient} />
+						<GeneralRisks patient={patient} />
 					</Box>
 				)}
 			</Error404>
