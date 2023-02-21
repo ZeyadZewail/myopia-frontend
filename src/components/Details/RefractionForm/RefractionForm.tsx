@@ -45,7 +45,6 @@ const RefractionForm: FC<RefractionFormInterface> = ({ patient }) => {
 				: parseISO(data.timestamp_created),
 			"yyyy-MM-dd"
 		);
-		console.log(data);
 		const requestOptions = {
 			method: "PUT",
 			headers: {

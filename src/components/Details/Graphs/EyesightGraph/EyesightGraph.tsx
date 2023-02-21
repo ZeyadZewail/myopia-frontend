@@ -20,6 +20,11 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 	}, [data, patientData]);
 	return (
 		<div>
+			{data.length === 0 ? (
+				<Typography variant="h2" sx={{ position: "relative", top: "42%", left: "27%", height: 0, zIndex: 10 }}>
+					No Data
+				</Typography>
+			) : null}
 			<Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>
 				{yLabel}
 			</Typography>
