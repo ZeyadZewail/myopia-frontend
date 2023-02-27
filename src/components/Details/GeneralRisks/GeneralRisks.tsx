@@ -10,6 +10,7 @@ import {
 	Checkbox,
 	FormControlLabel,
 	InputLabel,
+	Divider,
 } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -139,11 +140,10 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 					</Button>
 				</Box>
 			</Dialog>
-			<Box sx={{ display: "flex", justifyContent: "space-between" }}>
-				<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
-					Allgemeine risiken
-				</Typography>
-			</Box>
+			<Typography variant="h2" sx={{ width: "130%" }}>
+				Allgemeine risiken <Divider sx={{ mt: 2 }} />
+			</Typography>
+			<Box sx={{ display: "flex", justifyContent: "space-between" }}></Box>
 			<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
 				<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
@@ -207,22 +207,6 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 				</Box>
 
 				<Box>
-					<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
-						<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Asiatsiche Herkunft:</InputLabel>
-						<Controller
-							name="asian_heritage"
-							control={control}
-							render={({ field: props }) => (
-								<Checkbox
-									{...props}
-									sx={{ transform: "scale(2)" }}
-									checked={props.value}
-									onChange={(e) => props.onChange(e.target.checked)}
-								/>
-							)}
-						/>
-					</Box>
-
 					<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", my: 2 }}>
 						<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Pradisponierendes Syndrom:</InputLabel>
 						<Controller

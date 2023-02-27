@@ -17,12 +17,13 @@ const Details = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [patient, setPatient] = useState<Patient>({} as Patient);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<number>(0);
 	const [firstDiagramData1, setFirstDiagramData1] = useState<any[]>([]);
 	const [firstDiagramData2, setFirstDiagramData2] = useState<any[]>([]);
 	const [secondDiagramData, setSecondDiagramData] = useState<any[]>([]);
 	const [refractionDiagramData, setRefractionDiagramData] = useState<any[]>([]);
+	const [measurementRawData, setMeasurementRawData] = useState<any[]>([]);
 	const [measurementData, setMeasurementData] = useState<any[]>([]);
 	const [measurementGrowthData, setMeasurementGrowthData] = useState<any[]>([]);
 	const [doctorRatingData, setDoctorRatingData] = useState<any[]>([]);
@@ -51,7 +52,6 @@ const Details = () => {
 			return;
 		}
 		setPatient(responseData as Patient);
-		setLoading(false);
 	};
 
 	const getData = async () => {
@@ -83,6 +83,7 @@ const Details = () => {
 
 		const measurementDataResponse = await fetch(`/api/measurements/${patient.id}`, requestOptions);
 		const measurementData = await measurementDataResponse.json();
+		setMeasurementRawData(measurementData);
 		setMeasurementData(parseMeasurementData(measurementData));
 
 		const measurementGrowthDataResponse = await fetch(`/api/measurements/${patient.id}`, requestOptions);
@@ -92,6 +93,7 @@ const Details = () => {
 		const doctorRatingDataResponse = await fetch(`/api/doctor_rating/${patient.id}`, requestOptions);
 		const doctorRatingData = await doctorRatingDataResponse.json();
 		setDoctorRatingData(doctorRatingData);
+		setLoading(false);
 	};
 
 	return (
@@ -130,14 +132,7 @@ const Details = () => {
 							augenlangenzunahme={measurementGrowthData.at(-1)}
 							augenlangenzunahme_diff={refractionDiagramData.at(-1)}
 						/>
-						<Measurements
-							firstDiagramData1={firstDiagramData1}
-							firstDiagramData2={firstDiagramData2}
-							secondDiagramData={secondDiagramData}
-							refractionDiagramData={refractionDiagramData}
-							measurementData={measurementData}
-							measurementGrowthData={measurementGrowthData}
-						/>
+						<Measurements measurementRawData={measurementRawData} />
 					</Box>
 				)}
 			</Error404>
