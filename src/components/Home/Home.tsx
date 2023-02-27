@@ -12,7 +12,7 @@ import Loading from "../Loading/Loading";
 
 const Home = () => {
 	const [patients, setPatients] = useState<Patient[]>([]);
-	const [loading, SetLoading] = useState(false);
+	const [loading, SetLoading] = useState(true);
 
 	useEffect(() => {
 		getPatients();
