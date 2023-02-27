@@ -9,6 +9,7 @@ import {
 	MenuItem,
 	Checkbox,
 	FormControlLabel,
+	InputLabel,
 } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -16,6 +17,7 @@ import { parseISO, format } from "date-fns";
 import { useState, useEffect, FC } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Label } from "recharts";
 import Patient from "../../../types/Patient";
 
 interface GeneralRisksInterface {
@@ -93,7 +95,7 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 	};
 
 	return (
-		<Box sx={{ display: "flex", flexDirection: "column", width: "60%", gap: 4 }}>
+		<Box sx={{ display: "flex", flexDirection: "column", width: "30%", gap: 2 }}>
 			<Dialog
 				open={dialogMessage != ""}
 				PaperProps={{
@@ -137,117 +139,128 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 					</Button>
 				</Box>
 			</Dialog>
-			<Box sx={{ display: "flex", justifyContent: "space-between", width: "60%" }}>
+			<Box sx={{ display: "flex", justifyContent: "space-between" }}>
 				<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
 					Allgemeine risiken
 				</Typography>
 			</Box>
 			<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
 				{error ? <Alert severity="error">{error}</Alert> : null}
-				<Box sx={{ display: "flex", gap: 2 }}>
+				<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
+					<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Anfangsalter Der Myopie:</InputLabel>
 					<TextField
-						label="myopia beginning age"
 						type="number"
-						sx={{ width: "45%" }}
+						sx={{ width: "30%" }}
 						helperText={errors?.myopia_beginning_age?.message as string}
 						InputLabelProps={{ shrink: true }}
 						error={Boolean(errors?.myopia_beginning_age)}
 						value={watch("myopia_beginning_age")}
 						{...register("myopia_beginning_age", {
-							required: { value: true, message: "Please enter myopia beginning age" },
+							required: { value: true, message: "Please enter Anfangsalter Der Myopie" },
 						})}
 					/>
+				</Box>
 
+				<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
+					<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Myope Eltern:</InputLabel>
 					<TextField
-						label="nr myopic parents"
 						type="number"
-						sx={{ width: "45%" }}
+						sx={{ width: "30%" }}
 						helperText={errors?.nr_myopic_parents?.message as string}
 						error={Boolean(errors?.nr_myopic_parents)}
 						InputLabelProps={{ shrink: true }}
 						value={watch("nr_myopic_parents")}
 						{...register("nr_myopic_parents", {
-							required: { value: true, message: "Please enter nr myopic parents" },
+							required: { value: true, message: "Please enter Myope Eltern" },
 						})}
 					/>
 				</Box>
 
-				<Box sx={{ display: "flex", gap: 2 }}>
+				<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
+					<InputLabel sx={{ height: "fit-content", alignSelf: "center", ml: 4 }}>Elternteil 1 D:</InputLabel>
 					<TextField
-						sx={{ width: "45%" }}
-						label="first parent dioptres"
+						sx={{ width: "30%" }}
 						type="number"
 						helperText={errors?.nr_myopic_parents?.message as string}
 						error={Boolean(errors?.nr_myopic_parents)}
 						InputLabelProps={{ shrink: true }}
 						value={watch("first_parent_dioptres")}
 						{...register("first_parent_dioptres", {
-							required: { value: true, message: "Please enter first parent dioptres" },
+							required: { value: true, message: "Please enter Elternteil 1 D" },
 						})}
 					/>
+				</Box>
 
+				<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
+					<InputLabel sx={{ height: "fit-content", alignSelf: "center", ml: 4 }}>Elternteil 2 D:</InputLabel>
 					<TextField
-						sx={{ width: "45%" }}
-						label="second parent dioptres"
+						sx={{ width: "30%" }}
 						type="number"
 						helperText={errors?.nr_myopic_parents?.message as string}
 						error={Boolean(errors?.nr_myopic_parents)}
 						InputLabelProps={{ shrink: true }}
 						value={watch("second_parent_dioptres")}
 						{...register("second_parent_dioptres", {
-							required: { value: true, message: "Please enter second parent dioptres" },
+							required: { value: true, message: "Please enter Elternteil 2 D" },
 						})}
 					/>
 				</Box>
 
 				<Box>
-					<FormControlLabel
-						control={
-							<Controller
-								name="asian_heritage"
-								control={control}
-								render={({ field: props }) => (
-									<Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
-								)}
-							/>
-						}
-						label="asian heritage"
-					/>
+					<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
+						<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Asiatsiche Herkunft:</InputLabel>
+						<Controller
+							name="asian_heritage"
+							control={control}
+							render={({ field: props }) => (
+								<Checkbox
+									{...props}
+									sx={{ transform: "scale(2)" }}
+									checked={props.value}
+									onChange={(e) => props.onChange(e.target.checked)}
+								/>
+							)}
+						/>
+					</Box>
 
-					<FormControlLabel
-						control={
-							<Controller
-								name="predisposing_syndromes"
-								control={control}
-								render={({ field: props }) => (
-									<Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
-								)}
-							/>
-						}
-						label="predisposing syndromes"
-					/>
+					<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", my: 2 }}>
+						<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Pradisponierendes Syndrom:</InputLabel>
+						<Controller
+							name="predisposing_syndromes"
+							control={control}
+							render={({ field: props }) => (
+								<Checkbox
+									{...props}
+									sx={{ transform: "scale(2)" }}
+									checked={props.value}
+									onChange={(e) => props.onChange(e.target.checked)}
+								/>
+							)}
+						/>
+					</Box>
 				</Box>
 
-				<Box sx={{ display: "flex", gap: 2 }}>
+				<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
+					<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Zeit Im Feien (H):</InputLabel>
 					<TextField
-						label="hours outside per day"
+						sx={{ width: "30%" }}
 						type="number"
 						helperText={errors?.nr_myopic_parents?.message as string}
 						error={Boolean(errors?.nr_myopic_parents)}
 						InputLabelProps={{ shrink: true }}
 						value={watch("hours_outside_per_day")}
 						{...register("hours_outside_per_day", {
-							required: { value: true, message: "Please enter second hours outside per day" },
+							required: { value: true, message: "Please enter Zeit Im Feien (H)" },
 						})}
 					/>
-
-					<Button
-						variant="contained"
-						sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
-						onClick={handleSubmit(onSubmit)}>
-						Update
-					</Button>
 				</Box>
+
+				<Button
+					variant="contained"
+					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+					onClick={handleSubmit(onSubmit)}>
+					Update
+				</Button>
 			</Box>
 		</Box>
 	);

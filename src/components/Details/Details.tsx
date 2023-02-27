@@ -5,6 +5,7 @@ import Patient from "../../types/Patient";
 import Error404 from "../Error404/Error404";
 import Loading from "../Loading/Loading";
 import Analysis from "./Analysis/Analysis";
+import DoctorRating from "./DoctorRating/DoctorRating";
 import EditForm from "./EditForm/EditForm";
 import GeneralRisks from "./GeneralRisks/GeneralRisks";
 import GraphsController from "./Graphs/GraphsController/GraphsController";
@@ -16,7 +17,7 @@ const Details = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [patient, setPatient] = useState<Patient>({} as Patient);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<number>(0);
 	const [firstDiagramData1, setFirstDiagramData1] = useState<any[]>([]);
 	const [firstDiagramData2, setFirstDiagramData2] = useState<any[]>([]);
@@ -24,6 +25,7 @@ const Details = () => {
 	const [refractionDiagramData, setRefractionDiagramData] = useState<any[]>([]);
 	const [measurementData, setMeasurementData] = useState<any[]>([]);
 	const [measurementGrowthData, setMeasurementGrowthData] = useState<any[]>([]);
+	const [doctorRatingData, setDoctorRatingData] = useState<any[]>([]);
 
 	useEffect(() => {
 		getPatientInfo();
@@ -83,9 +85,13 @@ const Details = () => {
 		const measurementData = await measurementDataResponse.json();
 		setMeasurementData(parseMeasurementData(measurementData));
 
-		const measurementGrowthDataResponse = await fetch(`/api/measurements/growth/${patient.id}`, requestOptions);
+		const measurementGrowthDataResponse = await fetch(`/api/measurements/${patient.id}`, requestOptions);
 		const measurementGrowthData = await measurementGrowthDataResponse.json();
 		setMeasurementGrowthData(parseMeasurementGrowthData(measurementGrowthData));
+
+		const doctorRatingDataResponse = await fetch(`/api/doctor_rating/${patient.id}`, requestOptions);
+		const doctorRatingData = await doctorRatingDataResponse.json();
+		setDoctorRatingData(doctorRatingData);
 	};
 
 	return (
@@ -100,11 +106,12 @@ const Details = () => {
 								{patient.first_name + ", " + patient.last_name} <Divider sx={{ mt: 2 }} />
 							</Typography>
 						</Box>
-						<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+						<Box sx={{ display: "flex", gap: 4 }}>
 							<EditForm patient={patient} />
-							<MeasurementForm patient={patient} />
-							<RefractionForm patient={patient} />
-							<GeneralRisks patient={patient} />
+							<Box sx={{ width: "50%", display: "flex", gap: "inherit" }}>
+								<MeasurementForm patient={patient} />
+								<RefractionForm patient={patient} />
+							</Box>
 						</Box>
 						<GraphsController
 							patient={patient}
@@ -115,6 +122,8 @@ const Details = () => {
 							measurementData={measurementData}
 							measurementGrowthData={measurementGrowthData}
 						/>
+						<GeneralRisks patient={patient} />
+						<DoctorRating patient={patient} doctorRatingData={doctorRatingData} />
 						<Analysis
 							id={patient.id}
 							aeugenlange={measurementData[0]}

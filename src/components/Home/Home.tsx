@@ -12,7 +12,7 @@ import Loading from "../Loading/Loading";
 
 const Home = () => {
 	const [patients, setPatients] = useState<Patient[]>([]);
-	const [loading, SetLoading] = useState(true);
+	const [loading, SetLoading] = useState(false);
 
 	useEffect(() => {
 		getPatients();
@@ -63,6 +63,11 @@ const Home = () => {
 								</TableBody>
 							</Table>
 						</TableContainer>
+						{patients.length === 0 ? (
+							<Typography sx={{ textAlign: "center" }} variant="h2">
+								No Patients
+							</Typography>
+						) : null}
 					</Box>
 					<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
 						{`Anzahl Patienten: ${patients.length}`}
