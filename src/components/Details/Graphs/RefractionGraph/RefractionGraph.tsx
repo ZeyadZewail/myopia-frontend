@@ -48,8 +48,8 @@ const RefractionGraph: FC<RefreactionGraphInterface> = ({ data, width, height, d
 					bottom: 10,
 				}}>
 				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis label={{ value: xLabel, offset: -10, position: "insideBottom" }} dataKey="name" />
-				<YAxis domain={domain} />
+				<XAxis label={{ value: xLabel, offset: -10, position: "insideBottom" }} dataKey="name" dy={5} />
+				<YAxis domain={domain} dx={-5} />
 				<Tooltip />
 				<Legend
 					layout="vertical"

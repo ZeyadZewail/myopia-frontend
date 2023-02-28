@@ -26,18 +26,18 @@ const CustomDialog: FC<CustomDialogInterface> = ({ onOk }) => {
 			open={open}
 			PaperProps={{
 				style: {
-					gap: 20,
+					gap: 4,
 					padding: 20,
 					display: "flex",
 					flexDirection: "column",
 				},
 			}}>
-			<Alert sx={{ fontSize: 24, background: "inherit", alignItems: "center" }} severity={severity}>
+			<Alert sx={{ fontSize: 24, background: "inherit", alignItems: "center", padding: 0 }} severity={severity}>
 				{message}
 			</Alert>
 			{error != "" ? <Typography sx={{ textAlign: "center" }}>{`Error: ${error}`}</Typography> : null}
 			<Button
-				sx={{ width: "fit-content", alignSelf: "center" }}
+				sx={{ width: "fit-content", alignSelf: "center", mt: 2 }}
 				variant="contained"
 				onClick={() => {
 					message != "Deleted Successfully" ? onOk() : navigate("/");

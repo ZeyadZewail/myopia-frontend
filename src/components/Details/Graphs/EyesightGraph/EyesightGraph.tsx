@@ -39,8 +39,8 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 					bottom: 10,
 				}}>
 				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis label={{ value: xLabel, offset: -10, position: "insideBottom" }} dataKey="name" />
-				<YAxis domain={domain} />
+				<XAxis label={{ value: xLabel, offset: -10, position: "insideBottom" }} dataKey="name" dy={5} />
+				<YAxis domain={domain} dx={-5} />
 				<Tooltip />
 				<Legend
 					layout="vertical"
@@ -51,11 +51,11 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 					}}
 				/>
 
+				<Line type="monotone" connectNulls dataKey="Rechtes Auge" stroke="black" />
+				<Line type="monotone" connectNulls dataKey="Linkes Auge" stroke="#00BFFF" />
 				<Line type="monotone" dataKey={98} stroke="red" />
 				<Line type="monotone" dataKey={50} stroke="#FDE541" />
 				<Line type="monotone" dataKey={2} stroke="green" />
-				<Line type="monotone" connectNulls dataKey="Rechtes Auge" stroke="black" />
-				<Line type="monotone" connectNulls dataKey="Linkes Auge" stroke="#00BFFF" />
 			</LineChart>
 		</div>
 	);
