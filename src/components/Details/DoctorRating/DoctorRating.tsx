@@ -11,10 +11,16 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
+import { useSetAtom } from "jotai/react";
 import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import Patient from "../../../types/Patient";
+import {
+	customDialogMessage,
+	customDialogOpen,
+	customDialogType,
+	customDialogError,
+} from "../../CustomDialog/CustomDialog";
 
 interface doctorRatingInterface {
 	patient: Patient;
@@ -22,10 +28,10 @@ interface doctorRatingInterface {
 }
 
 const DoctorRating: FC<doctorRatingInterface> = ({ patient, doctorRatingData }) => {
-	const [error, setError] = useState("");
-	const [dialogMessage, setDialogMessage] = useState("");
-	const [warningMessage, setWarningMessage] = useState("");
-	const navigate = useNavigate();
+	const setCustomMessage = useSetAtom(customDialogMessage);
+	const setCustomDialogOpen = useSetAtom(customDialogOpen);
+	const setCustomDialogType = useSetAtom(customDialogType);
+	const setCustomDialogError = useSetAtom(customDialogError);
 
 	const {
 		handleSubmit,
@@ -67,8 +73,6 @@ const DoctorRating: FC<doctorRatingInterface> = ({ patient, doctorRatingData }) 
 	}, [patient, doctorRatingData.length]);
 
 	const onSubmit = async (data: any) => {
-		console.log(data);
-
 		const requestOptions = {
 			method: "PUT",
 			headers: {
@@ -81,68 +85,31 @@ const DoctorRating: FC<doctorRatingInterface> = ({ patient, doctorRatingData }) 
 		const response = await fetch(`/api/doctor_rating/${patient.id}`, requestOptions);
 		const responseData = await response.json();
 		if (response.status == 404) {
-			setError(responseData.detail);
+			setCustomDialogType("warning");
+			setCustomDialogError("404");
+			setCustomMessage("Something Went Wrong");
+			setCustomDialogOpen(true);
+			return;
 		}
 
 		if (response.ok) {
-			setError("");
-			setDialogMessage("Updated Successfully!");
+			setCustomDialogType("success");
+			setCustomMessage("Updated Successfully!");
+			setCustomDialogError("");
+			setCustomDialogOpen(true);
 		} else {
-			console.log("error", responseData);
-			setWarningMessage("Something Went Wrong");
+			setCustomDialogType("warning");
+			setCustomDialogError(responseData.detail);
+			setCustomMessage("Something Went Wrong");
+			setCustomDialogOpen(true);
 		}
 	};
 
 	return (
 		<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
-			<Dialog
-				open={dialogMessage != ""}
-				PaperProps={{
-					style: {
-						gap: 20,
-						padding: 20,
-					},
-				}}>
-				<Alert sx={{ fontSize: 24, background: "inherit", alignItems: "center" }} severity="success">
-					{dialogMessage}
-				</Alert>
-				<Button
-					sx={{ width: "fit-content", alignSelf: "center" }}
-					variant="contained"
-					onClick={() => {
-						dialogMessage != "Deleted Successfully" ? navigate(0) : navigate("/");
-					}}>
-					Ok
-				</Button>
-			</Dialog>
-			<Dialog
-				open={warningMessage != ""}
-				PaperProps={{
-					style: {
-						gap: 20,
-						padding: 20,
-						width: "fit-Content",
-					},
-				}}>
-				<Alert sx={{ fontSize: 18, background: "inherit", alignItems: "center" }} severity="warning">
-					{warningMessage}
-				</Alert>
-				<Box sx={{ display: "flex", gap: 4, justifyContent: "center" }}>
-					<Button
-						sx={{ width: "fit-content", alignSelf: "center" }}
-						variant="contained"
-						onClick={() => {
-							setWarningMessage("");
-						}}>
-						Ok
-					</Button>
-				</Box>
-			</Dialog>
-
 			<Typography variant="h2" sx={{ width: "fit-Content" }}>
 				Ärztliche bewertung <Divider sx={{ mt: 2 }} />
 			</Typography>
-			{error ? <Alert severity="error">{error}</Alert> : null}
 			<Box sx={{ display: "flex", gap: 2 }}>
 				<Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: "25%" }}>
 					<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>

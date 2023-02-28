@@ -2,20 +2,27 @@ import { Alert, Box, Button, Dialog, MenuItem, Select, TextField, Typography } f
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { parseISO, format } from "date-fns";
+import { useSetAtom } from "jotai";
 import { FC, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Patient from "../../../types/Patient";
+import {
+	customDialogMessage,
+	customDialogOpen,
+	customDialogType,
+	customDialogError,
+} from "../../CustomDialog/CustomDialog";
 
 interface RefractionFormInterface {
 	patient: Patient;
 }
 
 const RefractionForm: FC<RefractionFormInterface> = ({ patient }) => {
-	const [error, setError] = useState("");
-	const [dialogMessage, setDialogMessage] = useState("");
-	const [warningMessage, setWarningMessage] = useState("");
-	const navigate = useNavigate();
+	const setCustomMessage = useSetAtom(customDialogMessage);
+	const setCustomDialogOpen = useSetAtom(customDialogOpen);
+	const setCustomDialogType = useSetAtom(customDialogType);
+	const setCustomDialogError = useSetAtom(customDialogError);
 
 	const {
 		handleSubmit,
@@ -57,71 +64,33 @@ const RefractionForm: FC<RefractionFormInterface> = ({ patient }) => {
 		const response = await fetch(`/api/refactory/${patient.id}`, requestOptions);
 		const responseData = await response.json();
 		if (response.status == 404) {
-			setError(responseData.detail);
+			setCustomDialogType("warning");
+			setCustomDialogError("404");
+			setCustomMessage("Something Went Wrong");
+			setCustomDialogOpen(true);
+			return;
 		}
 
 		if (response.ok) {
-			setError("");
-			setDialogMessage("Updated Successfully!");
+			setCustomDialogType("success");
+			setCustomMessage("Updated Successfully!");
+			setCustomDialogError("");
+			setCustomDialogOpen(true);
 		} else {
-			console.log("error", responseData);
-			setWarningMessage(`Error: ${responseData.detail}`);
+			setCustomDialogType("warning");
+			setCustomDialogError(responseData.detail);
+			setCustomMessage("Something Went Wrong");
+			setCustomDialogOpen(true);
 		}
 	};
 
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", width: "50%", gap: 4 }}>
-			<Dialog
-				open={dialogMessage != ""}
-				PaperProps={{
-					style: {
-						gap: 20,
-						padding: 20,
-					},
-				}}>
-				<Alert sx={{ fontSize: 24, background: "inherit", alignItems: "center" }} severity="success">
-					{dialogMessage}
-				</Alert>
-				<Button
-					sx={{ width: "fit-content", alignSelf: "center" }}
-					variant="contained"
-					onClick={() => {
-						dialogMessage != "Deleted Successfully" ? navigate(0) : navigate("/");
-					}}>
-					Ok
-				</Button>
-			</Dialog>
-			<Dialog
-				open={warningMessage != ""}
-				PaperProps={{
-					style: {
-						gap: 20,
-						padding: 20,
-						width: "fit-Content",
-					},
-				}}>
-				<Alert sx={{ fontSize: 18, background: "inherit", alignItems: "center" }} severity="warning">
-					{warningMessage}
-				</Alert>
-				<Box sx={{ display: "flex", gap: 4, justifyContent: "center" }}>
-					<Button
-						sx={{ width: "fit-content", alignSelf: "center" }}
-						variant="contained"
-						onClick={() => {
-							setWarningMessage("");
-						}}>
-						Ok
-					</Button>
-				</Box>
-			</Dialog>
-
 			<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
 				Refraktion
 			</Typography>
 
 			<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
-				{error ? <Alert severity="error">{error}</Alert> : null}
-
 				<TextField
 					label="Refactory right"
 					helperText={errors?.refactory_right?.message as string}

@@ -16,7 +16,6 @@ interface MeasurementsInterface {
 }
 
 const Measurements: FC<MeasurementsInterface> = ({ measurementRawData }) => {
-	console.log(measurementRawData);
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
 			<Typography variant="h2" sx={{ width: "fit-Content" }}>

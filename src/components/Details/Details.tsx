@@ -1,7 +1,9 @@
 import { Box, Divider, Typography } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { useSetAtom } from "jotai/react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Patient from "../../types/Patient";
+import CustomDialog, { customDialogOpen } from "../CustomDialog/CustomDialog";
 import Error404 from "../Error404/Error404";
 import Loading from "../Loading/Loading";
 import Analysis from "./Analysis/Analysis";
@@ -27,6 +29,7 @@ const Details = () => {
 	const [measurementData, setMeasurementData] = useState<any[]>([]);
 	const [measurementGrowthData, setMeasurementGrowthData] = useState<any[]>([]);
 	const [doctorRatingData, setDoctorRatingData] = useState<any[]>([]);
+	const setCustomDialogOpen = useSetAtom(customDialogOpen);
 
 	useEffect(() => {
 		getPatientInfo();
@@ -96,8 +99,14 @@ const Details = () => {
 		setLoading(false);
 	};
 
+	const onSuccess = () => {
+		getData();
+		setCustomDialogOpen(false);
+	};
+
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", width: "100%", padding: 12, gap: 8 }}>
+			<CustomDialog onOk={onSuccess} />
 			<Error404 error={error} message={"Patient Not Found."}>
 				{loading ? (
 					<Loading />

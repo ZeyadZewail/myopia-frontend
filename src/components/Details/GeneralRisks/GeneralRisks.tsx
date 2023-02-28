@@ -15,21 +15,28 @@ import {
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { parseISO, format } from "date-fns";
+import { useSetAtom } from "jotai";
 import { useState, useEffect, FC } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Label } from "recharts";
 import Patient from "../../../types/Patient";
+import {
+	customDialogMessage,
+	customDialogOpen,
+	customDialogType,
+	customDialogError,
+} from "../../CustomDialog/CustomDialog";
 
 interface GeneralRisksInterface {
 	patient: Patient;
 }
 
 const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
-	const [error, setError] = useState("");
-	const [dialogMessage, setDialogMessage] = useState("");
-	const [warningMessage, setWarningMessage] = useState("");
-	const navigate = useNavigate();
+	const setCustomMessage = useSetAtom(customDialogMessage);
+	const setCustomDialogOpen = useSetAtom(customDialogOpen);
+	const setCustomDialogType = useSetAtom(customDialogType);
+	const setCustomDialogError = useSetAtom(customDialogError);
 
 	const {
 		handleSubmit,
@@ -83,69 +90,33 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 		const response = await fetch(`/api/generalrisks/${patient.id}`, requestOptions);
 		const responseData = await response.json();
 		if (response.status == 404) {
-			setError(responseData.detail);
+			setCustomDialogType("warning");
+			setCustomDialogError("404");
+			setCustomMessage("Something Went Wrong");
+			setCustomDialogOpen(true);
+			return;
 		}
 
 		if (response.ok) {
-			setError("");
-			setDialogMessage("Updated Successfully!");
+			setCustomDialogType("success");
+			setCustomMessage("Updated Successfully!");
+			setCustomDialogError("");
+			setCustomDialogOpen(true);
 		} else {
-			console.log("error", responseData);
-			setWarningMessage("Something Went Wrong");
+			setCustomDialogType("warning");
+			setCustomDialogError(responseData.detail);
+			setCustomMessage("Something Went Wrong");
+			setCustomDialogOpen(true);
 		}
 	};
 
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", width: "30%", gap: 2 }}>
-			<Dialog
-				open={dialogMessage != ""}
-				PaperProps={{
-					style: {
-						gap: 20,
-						padding: 20,
-					},
-				}}>
-				<Alert sx={{ fontSize: 24, background: "inherit", alignItems: "center" }} severity="success">
-					{dialogMessage}
-				</Alert>
-				<Button
-					sx={{ width: "fit-content", alignSelf: "center" }}
-					variant="contained"
-					onClick={() => {
-						dialogMessage != "Deleted Successfully" ? navigate(0) : navigate("/");
-					}}>
-					Ok
-				</Button>
-			</Dialog>
-			<Dialog
-				open={warningMessage != ""}
-				PaperProps={{
-					style: {
-						gap: 20,
-						padding: 20,
-						width: "fit-Content",
-					},
-				}}>
-				<Alert sx={{ fontSize: 18, background: "inherit", alignItems: "center" }} severity="warning">
-					{warningMessage}
-				</Alert>
-				<Box sx={{ display: "flex", gap: 4, justifyContent: "center" }}>
-					<Button
-						sx={{ width: "fit-content", alignSelf: "center" }}
-						variant="contained"
-						onClick={() => {
-							setWarningMessage("");
-						}}>
-						Ok
-					</Button>
-				</Box>
-			</Dialog>
 			<Typography variant="h2" sx={{ width: "130%" }}>
 				Allgemeine risiken <Divider sx={{ mt: 2 }} />
 			</Typography>
 			<Box sx={{ display: "flex", justifyContent: "space-between" }}></Box>
 			<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
-				{error ? <Alert severity="error">{error}</Alert> : null}
 				<Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
 					<InputLabel sx={{ height: "fit-content", alignSelf: "center" }}>Anfangsalter Der Myopie:</InputLabel>
 					<TextField
