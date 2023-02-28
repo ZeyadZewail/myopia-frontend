@@ -141,7 +141,7 @@ const Details = () => {
 							augenlangenzunahme={measurementGrowthData.at(-1)}
 							augenlangenzunahme_diff={refractionDiagramData.at(-1)}
 						/>
-						<Measurements measurementRawData={measurementRawData} />
+						<Measurements measurementRawData={measurementRawData} getData={getData} />
 					</Box>
 				)}
 			</Error404>
