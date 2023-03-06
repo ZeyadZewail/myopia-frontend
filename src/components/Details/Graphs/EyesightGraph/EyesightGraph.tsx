@@ -1,6 +1,7 @@
 import Typography from "@mui/material/Typography";
 import { FC, useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { CustomizedDot } from "../RefractionGraph/RefractionGraph";
 
 interface DetailsGraphInterface {
 	data: object[];
@@ -51,8 +52,20 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 					}}
 				/>
 
-				<Line type="monotone" connectNulls dataKey="Rechtes Auge" stroke="black" />
-				<Line type="monotone" connectNulls dataKey="Linkes Auge" stroke="#00BFFF" />
+				<Line
+					type="monotone"
+					dot={<CustomizedDot stroke="black" />}
+					connectNulls
+					dataKey="Rechtes Auge"
+					stroke="black"
+				/>
+				<Line
+					type="monotone"
+					dot={<CustomizedDot stroke="#00BFFF" />}
+					connectNulls
+					dataKey="Linkes Auge"
+					stroke="#00BFFF"
+				/>
 				<Line type="monotone" dataKey={98} stroke="red" />
 				<Line type="monotone" dataKey={50} stroke="#FDE541" />
 				<Line type="monotone" dataKey={2} stroke="green" />

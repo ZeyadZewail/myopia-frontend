@@ -1,7 +1,8 @@
 import Typography from "@mui/material/Typography";
 import { FC, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-
+import CloseIcon from "@mui/icons-material/Close";
+import { Box } from "@mui/material";
 interface RefreactionGraphInterface {
 	data: object[];
 	width: number;
@@ -60,11 +61,31 @@ const RefractionGraph: FC<RefreactionGraphInterface> = ({ data, width, height, d
 					}}
 				/>
 
-				<Line type="monotone" dataKey={"Right refraction"} stroke="black" />
-				<Line type="monotone" dataKey={"Left refraction"} stroke="#00BFFF" />
+				<Line
+					type="monotone"
+					dot={<CustomizedDot stroke="black" />}
+					connectNulls
+					dataKey={"Right refraction"}
+					stroke="black"
+				/>
+				<Line
+					type="monotone"
+					dot={<CustomizedDot stroke="#00BFFF" />}
+					connectNulls
+					dataKey={"Left refraction"}
+					stroke="#00BFFF"
+				/>
 			</LineChart>
 		</div>
 	);
 };
 
 export default RefractionGraph;
+
+export const CustomizedDot = (props: any) => {
+	const { cx, cy, stroke, payload, value } = props;
+
+	return value && cx && cy ? (
+		<CloseIcon x={cx - 10} y={cy - 10} width={20} height={20} stroke={stroke} sx={{ color: stroke }} />
+	) : null;
+};
