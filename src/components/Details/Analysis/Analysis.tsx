@@ -44,7 +44,7 @@ const Analysis: FC<AnalysisInterface> = ({ id, aeugenlange, augenlangenzunahme, 
 			<Typography sx={{ color: "#979797" }} fontWeight={"500"} variant="h6">
 				bla bla bla bla insert description here
 			</Typography>
-			<Alert severity="warning">{warningMessage}</Alert>
+			{warningMessage != "" ? <Alert severity="warning">{warningMessage}</Alert> : null}
 			<Box sx={{ display: "flex", gap: 4 }}>
 				<Box sx={{ display: "flex", flexDirection: "column", width: "50%", gap: 2 }}>
 					<Typography variant="h3" color={"#1976d2"}>

@@ -26,7 +26,6 @@ interface MeasurementsInterface {
 }
 
 const Measurements: FC<MeasurementsInterface> = ({ measurementRawData, getData }) => {
-	console.log(measurementRawData);
 	const setCustomMessage = useSetAtom(customDialogMessage);
 	const setCustomDialogOpen = useSetAtom(customDialogOpen);
 	const setCustomDialogType = useSetAtom(customDialogType);

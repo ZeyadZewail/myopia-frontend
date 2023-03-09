@@ -15,9 +15,20 @@ interface DetailsGraphInterface {
 
 const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, height, domain, xLabel, yLabel }) => {
 	const [combined, setCombined] = useState<any[]>([]);
+	function compare(a: any, b: any) {
+		if (Number(a.name) < Number(b.name)) {
+			return -1;
+		}
+		if (Number(a.name) > Number(b.name)) {
+			return 1;
+		}
+		return 0;
+	}
 
 	useEffect(() => {
-		setCombined(mergeObjects(data, patientData, "name"));
+		const mergedObjects = mergeObjects(data, patientData, "name");
+		mergedObjects.sort(compare);
+		setCombined(mergedObjects);
 	}, [data, patientData]);
 	return (
 		<div>
