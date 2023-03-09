@@ -51,7 +51,12 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 					bottom: 10,
 				}}>
 				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis label={{ value: xLabel, offset: -10, position: "insideBottom" }} dataKey="name" dy={5} />
+				<XAxis
+					label={{ value: xLabel, offset: -10, position: "insideBottom" }}
+					dataKey="name"
+					dy={5}
+					padding={{ left: 20, right: 20 }}
+				/>
 				<YAxis domain={domain} dx={-5} />
 				<Tooltip />
 				<Legend
