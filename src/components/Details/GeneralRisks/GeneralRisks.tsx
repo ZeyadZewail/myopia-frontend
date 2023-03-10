@@ -112,7 +112,7 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", width: "30%", gap: 2 }}>
-			<Typography variant="h2" sx={{ width: "130%" }}>
+			<Typography variant="h4" sx={{ width: "fit-Content" }}>
 				Allgemeine risiken <Divider sx={{ mt: 2 }} />
 			</Typography>
 			<Box sx={{ display: "flex", justifyContent: "space-between" }}></Box>
@@ -212,7 +212,7 @@ const GeneralRisks: FC<GeneralRisksInterface> = ({ patient }) => {
 
 				<Button
 					variant="contained"
-					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+					sx={{ width: "fit-content", fontSize: 14, alignSelf: "center" }}
 					onClick={handleSubmit(onSubmit)}>
 					Update
 				</Button>

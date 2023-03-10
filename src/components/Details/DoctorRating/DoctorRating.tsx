@@ -32,7 +32,6 @@ const DoctorRating: FC<doctorRatingInterface> = ({ patient, doctorRatingData }) 
 	const setCustomDialogOpen = useSetAtom(customDialogOpen);
 	const setCustomDialogType = useSetAtom(customDialogType);
 	const setCustomDialogError = useSetAtom(customDialogError);
-	console.log(doctorRatingData);
 
 	const {
 		handleSubmit,
@@ -110,7 +109,7 @@ const DoctorRating: FC<doctorRatingInterface> = ({ patient, doctorRatingData }) 
 
 	return (
 		<Box component="form" sx={{ display: "flex", flexDirection: "column", gap: "inherit" }}>
-			<Typography variant="h2" sx={{ width: "fit-Content" }}>
+			<Typography variant="h4" sx={{ width: "fit-Content" }}>
 				Ärztliche bewertung <Divider sx={{ mt: 2 }} />
 			</Typography>
 			<Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
@@ -294,7 +293,7 @@ const DoctorRating: FC<doctorRatingInterface> = ({ patient, doctorRatingData }) 
 				</Box>
 				<Button
 					variant="contained"
-					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+					sx={{ width: "fit-content", fontSize: 14, alignSelf: "center" }}
 					onClick={handleSubmit(onSubmit)}>
 					Update
 				</Button>

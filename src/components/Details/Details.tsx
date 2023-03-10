@@ -17,7 +17,6 @@ import RefractionForm from "./RefractionForm/RefractionForm";
 
 const Details = () => {
 	const { id } = useParams();
-	const navigate = useNavigate();
 	const [patient, setPatient] = useState<Patient>({} as Patient);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<number>(0);
@@ -91,6 +90,7 @@ const Details = () => {
 
 		const measurementGrowthDataResponse = await fetch(`/api/measurements/${patient.id}`, requestOptions);
 		const measurementGrowthData = await measurementGrowthDataResponse.json();
+		console.log(measurementGrowthData);
 		setMeasurementGrowthData(parseMeasurementGrowthData(measurementGrowthData));
 
 		const doctorRatingDataResponse = await fetch(`/api/doctor_rating/${patient.id}`, requestOptions);
@@ -111,12 +111,9 @@ const Details = () => {
 				{loading ? (
 					<Loading />
 				) : (
-					<Box sx={{ display: "flex", flexDirection: "column", gap: 6 }}>
-						<Box sx={{ display: "flex", gap: 0, width: "100%" }}>
-							<Typography variant="h2">
-								{patient.first_name + ", " + patient.last_name} <Divider sx={{ mt: 2 }} />
-							</Typography>
-						</Box>
+					<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+						<Typography variant="h2">{patient.first_name + ", " + patient.last_name}</Typography>
+
 						<Box sx={{ display: "flex", gap: 4 }}>
 							<EditForm patient={patient} />
 							<Box sx={{ width: "50%", display: "flex", gap: "inherit" }}>
@@ -210,8 +207,8 @@ const parseMeasurementGrowthData = (data: any) => {
 	for (let i in data) {
 		data1.push({ name: data[i]["age"].toString() });
 
-		data1[counter] = { ...data1[counter], ["Rechtes Auge"]: Number(data[i]["ra_growth_per_year"]).toFixed(3) };
-		data1[counter] = { ...data1[counter], ["Linkes Auge"]: Number(data[i]["la_growth_per_year"]).toFixed(3) };
+		data1[counter] = { ...data1[counter], ["Rechtes Auge"]: Number(data[i]["ra_achslaenge"]).toFixed(3) };
+		data1[counter] = { ...data1[counter], ["Linkes Auge"]: Number(data[i]["la_achslaenge"]).toFixed(3) };
 		counter++;
 	}
 

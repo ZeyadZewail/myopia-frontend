@@ -131,7 +131,7 @@ const MeasurementForm: FC<MeasurementFormInterface> = ({ patient }) => {
 				/>
 				<Button
 					variant="contained"
-					sx={{ width: "fit-content", fontSize: 16, alignSelf: "center" }}
+					sx={{ width: "fit-content", fontSize: 14, alignSelf: "center" }}
 					onClick={handleSubmit(onSubmit)}>
 					Update
 				</Button>

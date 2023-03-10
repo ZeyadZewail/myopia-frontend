@@ -86,7 +86,7 @@ const Measurements: FC<MeasurementsInterface> = ({ measurementRawData, getData }
 
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-			<Typography variant="h2" sx={{ width: "fit-Content" }}>
+			<Typography variant="h4" sx={{ width: "fit-Content" }}>
 				Measurements <Divider sx={{ mt: 2 }} />
 			</Typography>
 

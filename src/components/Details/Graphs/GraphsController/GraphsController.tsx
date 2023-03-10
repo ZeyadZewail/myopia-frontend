@@ -2,6 +2,7 @@ import { Box, Divider, FormControl, InputLabel, MenuItem, Select, Typography } f
 import { FC, useEffect, useState } from "react";
 import Patient from "../../../../types/Patient";
 import EyesightGraph from "../EyesightGraph/EyesightGraph";
+import GrowthGraph from "../GrowthGraph/GrowthGraph";
 import RefractionGraph from "../RefractionGraph/RefractionGraph";
 
 interface DetailsControllerInterface {
@@ -25,7 +26,7 @@ const GraphsController: FC<DetailsControllerInterface> = ({
 }) => {
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-			<Typography variant="h2" sx={{ width: "fit-Content" }}>
+			<Typography variant="h4" sx={{ width: "fit-Content" }}>
 				Graphs <Divider sx={{ mt: 2 }} />
 			</Typography>
 			<Box display={"flex"}>
@@ -33,16 +34,16 @@ const GraphsController: FC<DetailsControllerInterface> = ({
 					data={firstDiagramData1}
 					width={700}
 					height={400}
-					domain={[1, 40]}
+					domain={[18, 28]}
 					xLabel={"Alter"}
 					yLabel={"Augenlänge"}
 					patientData={measurementData}
 				/>
-				<EyesightGraph
+				<GrowthGraph
 					data={secondDiagramData}
 					width={700}
 					height={400}
-					domain={[-1, 1]}
+					domain={[-0.2, 0.7]}
 					xLabel={"Alter"}
 					yLabel={"Achslängenwachstum [mm]"}
 					patientData={measurementGrowthData}
@@ -53,7 +54,7 @@ const GraphsController: FC<DetailsControllerInterface> = ({
 					data={refractionDiagramData}
 					width={700}
 					height={400}
-					domain={[0, 40]}
+					domain={[5, 20]}
 					xLabel={"Alter"}
 					yLabel={"Refraktion"}
 				/>

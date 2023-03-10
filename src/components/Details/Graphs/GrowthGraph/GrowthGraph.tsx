@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC, useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
@@ -14,7 +13,7 @@ interface DetailsGraphInterface {
 	domain: any[];
 }
 
-const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, height, domain, xLabel, yLabel }) => {
+const GrowthGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, height, domain, xLabel, yLabel }) => {
 	const [combined, setCombined] = useState<any[]>([]);
 	function compare(a: any, b: any) {
 		if (Number(a.name) < Number(b.name)) {
@@ -57,7 +56,6 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis
 					label={{ value: xLabel, offset: -10, position: "insideBottom" }}
-					interval={0}
 					dataKey="name"
 					dy={5}
 					padding={{ left: 20, right: 20 }}
@@ -75,9 +73,6 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 
 				<Line type="monotone" dataKey={98} stroke="red" />
 				<Line type="monotone" dataKey={50} stroke="#FDE541" />
-				<Line type="monotone" dataKey={25} stroke="#FDE541" />
-				<Line type="monotone" dataKey={10} stroke="green" />
-				<Line type="monotone" dataKey={5} stroke="green" />
 				<Line type="monotone" dataKey={2} stroke="green" />
 				<Line
 					type="monotone"
@@ -98,7 +93,7 @@ const EyesightGraph: FC<DetailsGraphInterface> = ({ data, patientData, width, he
 	);
 };
 
-export default EyesightGraph;
+export default GrowthGraph;
 
 function mergeObjects(list1: any[], list2: any[], prop: string) {
 	return [

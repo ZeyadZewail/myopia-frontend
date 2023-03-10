@@ -221,7 +221,7 @@ const EditForm: FC<EditFormInterface> = ({ patient }) => {
 						</Button>
 						<ColorButton
 							variant="contained"
-							sx={{ backgroundColor: "red", fontSize: 16, height: "fit-Content", alignSelf: "center" }}
+							sx={{ backgroundColor: "red", fontSize: 14, height: "fit-Content", alignSelf: "center" }}
 							onClick={() => {
 								setWarningMessage(`Are you Sure you want to delete ${patient.first_name} ${patient.last_name}?`);
 							}}>
